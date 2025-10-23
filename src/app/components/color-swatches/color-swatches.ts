@@ -1,15 +1,16 @@
-import {Component, inject, input, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ColorService} from '../../services/color-service';
-import {SwatchMode} from '../../models/swatch-mode.model';
 import {Subscription} from 'rxjs';
 import chroma, {Color} from 'chroma-js';
 import {ColorSwatch} from '../color-swatch/color-swatch';
+import {DecimalPipe} from '@angular/common';
 
 
 @Component({
   selector: 'app-color-swatches',
   imports: [
-    ColorSwatch
+    ColorSwatch,
+    DecimalPipe
   ],
   templateUrl: './color-swatches.html',
   styles: ``
@@ -21,23 +22,33 @@ export class ColorSwatches implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
-  protected readonly swatchColors = signal<Color[]>([]);
+  protected readonly lighterColors = signal<Color[]>([]);
+  protected readonly darkerColors = signal<Color[]>([]);
 
-  public readonly mode = input.required<SwatchMode>();
+  protected readonly swatchSteps = computed(() => {
+    const length = this.lighterColors().length;
+    const step = length > 1 ? 1 / (length - 1) : 1;
+
+    return Array.from({length}, (_, i) => i * step);
+  });
+
 
 
   public ngOnInit() {
     this.subscription = this.currentColor$
       .subscribe(color => {
-        const colors: Color[] = [];
-        const targetColor = this.mode() === "light" ? "white" : "black";
-        const scaledColor = chroma.scale([color.hex(), targetColor]);
+        const lighterColors: Color[] = [];
+        const darkerColors: Color[] = [];
+        const lighterScale = chroma.scale([color.hex(), "white"]);
+        const darkerScale = chroma.scale([color.hex(), "black"]);
 
         for (let i = 0; i <= 1; i = i + 0.1) {
-          colors.push(scaledColor(i));
+          lighterColors.push(lighterScale(i));
+          darkerColors.push(darkerScale(i));
         }
 
-        this.swatchColors.set(colors);
+        this.lighterColors.set(lighterColors);
+        this.darkerColors.set(darkerColors);
       });
   }
 

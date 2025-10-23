@@ -1,7 +1,32 @@
-<h2>Shades</h2>
+  <h2>Shades</h2>
 
-<div class="color-swatches-container">
-  @for (color of swatchColors(); track $index) {
-    <app-color-swatch [color]="color"/>
-  }
-</div>
+  <table class="color-swatches">
+    <thead>
+    <tr>
+      @for (step of swatchSteps(); track $index) {
+        <th class="text-center">
+          <div class="badge text-bg-primary mb-2">
+            {{ step * 100 | number: "1.0-0" }}%
+          </div>
+        </th>
+      }
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      @for (color of lighterColors(); track $index) {
+        <td>
+          <app-color-swatch [color]="color"/>
+        </td>
+      }
+    </tr>
+    <tr>
+      @for (color of darkerColors(); track $index) {
+        <td>
+          <app-color-swatch [color]="color"/>
+        </td>
+      }
+    </tr>
+    </tbody>
+  </table>
+
