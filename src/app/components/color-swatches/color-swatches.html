@@ -1,0 +1,7 @@
+<h2>Shades</h2>
+
+<div class="color-swatches-container">
+  @for (color of swatchColors(); track $index) {
+    <app-color-swatch [color]="color"/>
+  }
+</div>

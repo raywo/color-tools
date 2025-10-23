@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+.color-swatches-container {
+  display: flex;
+}
+
+.color-swatch-container {
+  --ct-swatch-size: 7.5ch;
+
+  width: var(--ct-swatch-size);
+  text-align: center;
+}
+
+.color-swatch {
+  --ct-bg-color: #fff;
+
+  background-color: var(--ct-bg-color);
+  width: var(--ct-swatch-size);
+  height: var(--ct-swatch-size);
+}

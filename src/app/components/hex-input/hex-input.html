@@ -1,0 +1,23 @@
+<div class="row">
+  <label for="hexColorField" class="col-1 col-form-label">Hex Color</label>
+  <div class="input-group col">
+    <span class="input-group-text">#</span>
+    <input type="text"
+           id="hexColorField"
+           class="form-control"
+           placeholder="FFFFFF"
+           [(ngModel)]="hexColor"
+           (blur)="colorChanged()">
+  </div>
+
+  <div class="col-2">
+    CSS: {{ (currentColor$ | async)?.hex() }}
+  </div>
+
+  <div class="col-3">
+    <button type="button"
+            class="btn btn-primary">
+      Copy
+    </button>
+  </div>
+</div>

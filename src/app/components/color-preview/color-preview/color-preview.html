@@ -1,0 +1,7 @@
+@let color = (currentColor$ | async)!;
+@let hexColor = color.hex();
+
+<div class="color-preview"
+     [style.background-color]="hexColor">
+  {{ hexColor }}
+</div>
