@@ -4,11 +4,14 @@
 /* Importing Bootstrap SCSS file. */
 @use "bootstrap/scss/bootstrap";
 @use "bootstrap-icons/font/bootstrap-icons.css";
+@use "app/styles/dark-mode";
 
 
 :root, :host {
-  --ct-heading-start-color: var(--bs-primary); //hsl(189.11, 100%, 15.49%);
-  --ct-heading-end-color: var(--bs-secondary); // hsl(20.56, 85.04%, 49.8%);
+  --ct-header-height: 80px;
+  --ct-header-bg: var(--bs-body-bg);
+  --ct-gutter-x: 1rem;
+  --ct-scroll-shadow: hsla(0 0% 0% / 0.1) 0 0.5rem 1rem;
 }
 
 h1 {
@@ -35,6 +38,7 @@ table.color-swatches {
   flex-direction: column;
   gap: 1rem;
 
+  padding-top: 1.5rem;
   margin-inline: auto;
   width: fit-content;
 }
@@ -43,6 +47,22 @@ table.color-swatches {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  width: 100%;
+
+  padding-inline-start: var(--ct-gutter-x);
+  background-color: var(--ct-header-bg);
+
+  /* Fall back to persistent shadow */
+  box-shadow: var(--ct-scroll-shadow);
+
+  position: sticky;
+  top: 0;
+  z-index: 500;
+
+  .github-corner {
+    //margin-inline-end: calc(var(--bs-gutter-x) * -0.5);
+  }
 }
 
 .input {
@@ -82,7 +102,7 @@ table.color-swatches {
 
   .css {
     flex-grow: 1;
-    font-family: monospace;
+    font-family: var(--bs-font-monospace), monospace;
     font-size: 1.1rem;
   }
 }

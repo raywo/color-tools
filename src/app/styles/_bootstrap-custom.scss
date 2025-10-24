@@ -1,6 +1,10 @@
 @use "./variables" as vars;
 
 @use "bootstrap/scss/bootstrap" with (
+  // Fonts
+  $font-family-sans-serif: vars.$fonts,
+  $font-family-monospace: vars.$monospacedFonts,
+
   // Colors
   $primary: vars.$primary,
   $secondary: vars.$secondary,
@@ -20,3 +24,6 @@
   $form-range-thumb-height: 1.5rem,
   $form-range-thumb-bg: var(--bs-secondary),
 );
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap');
