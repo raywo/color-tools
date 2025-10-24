@@ -4,7 +4,7 @@ import {ColorService} from '../../services/color-service';
 import {Subscription} from 'rxjs';
 import chroma from 'chroma-js';
 import {inRgbRange} from '../../helpers/range.helper';
-import {AsyncPipe} from '@angular/common';
+import {CopyCss} from '../copy-css/copy-css';
 
 
 @Component({
@@ -12,7 +12,7 @@ import {AsyncPipe} from '@angular/common';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    AsyncPipe
+    CopyCss
   ],
   templateUrl: './rgb-input.html',
   styles: ``

@@ -1,32 +1,59 @@
+<div class="d-flex justify-content-between mb-2">
   <h2>Shades</h2>
 
-  <table class="color-swatches">
-    <thead>
-    <tr>
-      @for (step of swatchSteps(); track $index) {
-        <th class="text-center">
-          <div class="badge text-bg-primary mb-2">
-            {{ step * 100 | number: "1.0-0" }}%
-          </div>
-        </th>
-      }
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      @for (color of lighterColors(); track $index) {
-        <td>
-          <app-color-swatch [color]="color"/>
-        </td>
-      }
-    </tr>
-    <tr>
-      @for (color of darkerColors(); track $index) {
-        <td>
-          <app-color-swatch [color]="color"/>
-        </td>
-      }
-    </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="btn-group"
+         role="group"
+         aria-label="Color mode selector">
+      <button type="button"
+              class="btn btn-outline-primary"
+              [class.active]="colorMode() === 'hex'"
+              (click)="colorMode.set('hex')">
+        Hex
+      </button>
+      <button type="button"
+              class="btn btn-outline-primary"
+              [class.active]="colorMode() === 'rgb'"
+              (click)="colorMode.set('rgb')">
+        RGB
+      </button>
+      <button type="button"
+              class="btn btn-outline-primary"
+              [class.active]="colorMode() === 'hsl'"
+              (click)="colorMode.set('hsl')">
+        HSL
+      </button>
+    </div>
+  </div>
+</div>
+
+<table class="color-swatches">
+  <thead>
+  <tr>
+    @for (step of swatchSteps(); track $index) {
+      <th class="text-center">
+        <div class="badge text-bg-primary mb-2">
+          {{ step * 100 | number: "1.0-0" }}%
+        </div>
+      </th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    @for (color of lighterColors(); track $index) {
+      <td>
+        <app-color-swatch [color]="color" [colorMode]="colorMode()"/>
+      </td>
+    }
+  </tr>
+  <tr>
+    @for (color of darkerColors(); track $index) {
+      <td>
+        <app-color-swatch [color]="color" [colorMode]="colorMode()"/>
+      </td>
+    }
+  </tr>
+  </tbody>
+</table>
 

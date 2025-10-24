@@ -1,25 +1,21 @@
-<div class="hstack gap-2">
-  <div class="input">
-    <label for="hexColorField" class="form-label">Hex Color</label>
-    <div class="input-group">
-      <span class="input-group-text">#</span>
-      <input type="text"
-             id="hexColorField"
-             class="form-control"
-             placeholder="FFFFFF"
-             [(ngModel)]="hexColor"
-             (blur)="colorChanged()">
+<div class="input">
+  <form class="input-form">
+    <div class="input-a">
+      <label for="hexColorField" class="form-label">Hex Color</label>
+      <div class="input-group">
+        <span class="input-group-text">#</span>
+        <input type="text"
+               id="hexColorField"
+               class="form-control"
+               placeholder="FFFFFF"
+               maxlength="6"
+               pattern="[0-9A-Fa-f]{6}"
+               name="hexColor"
+               [(ngModel)]="hexColor"
+               (blur)="colorChanged()">
+      </div>
     </div>
-  </div>
+  </form>
 
-  <div class="">
-    {{ (currentColor$ | async)?.hex() }}
-  </div>
-
-  <div class="">
-    <button type="button"
-            class="btn btn-primary">
-      Copy CSS
-    </button>
-  </div>
+  <div app-copy-css colorMode="hex"></div>
 </div>

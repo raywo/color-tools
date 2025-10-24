@@ -3,16 +3,16 @@ import {ColorService} from '../../services/color-service';
 import {Subscription} from 'rxjs';
 import {inHslAngleRange, inHslPercentRange} from '../../helpers/range.helper';
 import chroma from 'chroma-js';
-import {AsyncPipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CopyCss} from '../copy-css/copy-css';
 
 
 @Component({
   selector: 'app-hsl-input',
   imports: [
-    AsyncPipe,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CopyCss
   ],
   templateUrl: './hsl-input.html',
   styles: ``

@@ -13,7 +13,6 @@ export class ColorService {
 
 
   public set currentColor(color: Color) {
-    console.log("Setting color to: " + color + " valid: " + chroma.valid(color) + "")
     if (chroma.valid(color)) {
       this._currentColor.next(color);
     }

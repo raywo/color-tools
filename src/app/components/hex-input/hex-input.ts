@@ -3,14 +3,14 @@ import {FormsModule} from '@angular/forms';
 import {ColorService} from '../../services/color-service';
 import chroma, {Color} from 'chroma-js';
 import {Subscription} from 'rxjs';
-import {AsyncPipe} from '@angular/common';
+import {CopyCss} from '../copy-css/copy-css';
 
 
 @Component({
   selector: 'app-hex-input',
   imports: [
     FormsModule,
-    AsyncPipe
+    CopyCss
   ],
   templateUrl: './hex-input.html',
   styles: ``

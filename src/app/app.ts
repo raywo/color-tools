@@ -4,11 +4,12 @@ import {ColorPreview} from './components/color-preview/color-preview/color-previ
 import {RgbInput} from './components/rgb-input/rgb-input';
 import {HslInput} from './components/hsl-input/hsl-input';
 import {ColorSwatches} from './components/color-swatches/color-swatches';
+import {BackgroundButtons} from './components/background-buttons/background-buttons';
 
 
 @Component({
   selector: 'app-root',
-  imports: [HexInput, ColorPreview, RgbInput, HslInput, ColorSwatches],
+  imports: [HexInput, ColorPreview, RgbInput, HslInput, ColorSwatches, BackgroundButtons],
   templateUrl: './app.html',
   styles: ``
 })
