@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core';
 import {AsyncPipe} from '@angular/common';
 import {ColorService} from '../../services/color-service';
-import {ColorMode} from '../../models/color-mode.model';
+import {ColorSpace} from '../../models/color-space.model';
 import {map} from 'rxjs';
 
 
@@ -36,7 +36,7 @@ export class CopyCss {
     );
 
 
-  public readonly colorMode = input.required<ColorMode>();
+  public readonly colorMode = input.required<ColorSpace>();
 
 
   protected copyToClipboard(value: string) {

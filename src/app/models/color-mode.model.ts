@@ -1,1 +1,1 @@
-export type ColorMode = "rgb" | "hsl" | "hex";
+export type ColorMode = 'light' | 'dark' | 'system';

@@ -1,6 +1,6 @@
 import {Component, computed, input} from '@angular/core';
 import {Color} from 'chroma-js';
-import {ColorMode} from '../../models/color-mode.model';
+import {ColorSpace} from '../../models/color-space.model';
 import {NgTemplateOutlet} from '@angular/common';
 import {KeyValueDisplay} from '../key-value-display/key-value-display';
 
@@ -17,7 +17,7 @@ import {KeyValueDisplay} from '../key-value-display/key-value-display';
 export class ColorSwatch {
 
   public readonly color = input.required<Color>();
-  public readonly colorMode = input.required<ColorMode>();
+  public readonly colorMode = input.required<ColorSpace>();
 
   protected cssToCopy = computed(() => {
     switch (this.colorMode()) {

@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 import chroma, {Color} from 'chroma-js';
 import {ColorSwatch} from '../color-swatch/color-swatch';
 import {DecimalPipe} from '@angular/common';
-import {ColorMode} from '../../models/color-mode.model';
+import {ColorSpace} from '../../models/color-space.model';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class ColorSwatches implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
-  protected readonly colorMode = signal<ColorMode>("hsl");
+  protected readonly colorMode = signal<ColorSpace>("hsl");
   protected readonly lighterColors = signal<Color[]>([]);
   protected readonly darkerColors = signal<Color[]>([]);
 
