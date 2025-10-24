@@ -5,6 +5,7 @@ import {inHslAngleRange, inHslPercentRange} from '../../helpers/range.helper';
 import chroma from 'chroma-js';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CopyCss} from '../copy-css/copy-css';
+import {RangedInput} from '../ranged-input/ranged-input';
 
 
 @Component({
@@ -12,7 +13,8 @@ import {CopyCss} from '../copy-css/copy-css';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    CopyCss
+    CopyCss,
+    RangedInput
   ],
   templateUrl: './hsl-input.html',
   styles: ``
@@ -23,22 +25,9 @@ export class HslInput implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
-  protected readonly currentColor$ = this.colorService.currentColor$;
   protected readonly hue = signal<number | null>(0);
   protected readonly saturation = signal<number | null>(0);
   protected readonly luminance = signal<number | null>(0);
-
-  protected readonly hueRead = computed(() => {
-    return this.hue()?.toFixed(2) ?? 0;
-  });
-
-  protected readonly saturationRead = computed(() => {
-    return this.saturation()?.toFixed(2) ?? 0;
-  });
-
-  protected readonly luminanceRead = computed(() => {
-    return this.luminance()?.toFixed(2) ?? 0;
-  });
 
   private readonly color = computed(() => {
     const hue = this.hue();
@@ -73,20 +62,20 @@ export class HslInput implements OnInit, OnDestroy {
   }
 
 
-  protected hueChanged(value: string) {
-    this.hue.set(parseFloat(value));
+  protected hueChanged(value: number | null) {
+    this.hue.set(value ?? 0);
     this.colorChanged();
   }
 
 
-  protected saturationChanged(value: string) {
-    this.saturation.set(parseFloat(value));
+  protected saturationChanged(value: number | null) {
+    this.saturation.set(value ?? 0);
     this.colorChanged();
   }
 
 
-  protected luminanceChanged(value: string) {
-    this.luminance.set(parseFloat(value));
+  protected luminanceChanged(value: number | null) {
+    this.luminance.set(value ?? 0);
     this.colorChanged();
   }
 

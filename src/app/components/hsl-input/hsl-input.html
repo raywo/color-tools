@@ -3,108 +3,36 @@
 <div class="input">
   <form class="input-form">
     <div class="input-a"
-         [class.was-validated]="hueField.touched || hueField.dirty">
-      <label for="hueField" class="col-1 col-form-label">Hue</label>
-      <div class="input-group">
-        <input type="number"
-               id="hueField"
-               class="form-control"
-               placeholder="0-255"
-               min="0"
-               max="360"
-               step="0.01"
-               name="hue"
-               [ngModel]="hueRead()"
-               (blur)="hueChanged(hueField.value)"
-               aria-describedby="hueHelp"
-               #hueField="ngModel">
-        <span class="input-group-text">°</span>
-      </div>
-      <div id="hueHelp" class="form-text">
-        0-360
-      </div>
-      <div class="invalid-feedback">
-        Please enter a number in the range 0–360.
-      </div>
-      <input type="range"
-             class="form-range"
-             min="0"
-             max="359.99"
-             step="0.01"
-             name="hue"
-             [ngModel]="hueRead()"
-             (ngModelChange)="hueChanged($event)"
-             #hueSlider="ngModel">
+         app-ranged-input
+         [value]="hue()"
+         (valueChange)="hueChanged($event)"
+         [precision]="2"
+         [min]="0"
+         [max]="360"
+         unit="°"
+         label="Hue">
     </div>
 
     <div class="input-b"
-         [class.was-validated]="saturationField.touched || saturationField.dirty">
-      <label for="saturationField" class="col-1 col-form-label">Saturation</label>
-      <div class="col input-group">
-        <input type="number"
-               id="saturationField"
-               class="form-control"
-               placeholder="0-255"
-               min="0"
-               max="100"
-               step="0.1"
-               name="saturation"
-               [ngModel]="saturationRead()"
-               (blur)="saturationChanged(saturationField.value)"
-               aria-describedby="saturationHelp"
-               #saturationField="ngModel">
-        <span class="input-group-text">%</span>
-      </div>
-      <div id="saturationHelp" class="form-text">
-        0-100
-      </div>
-      <div class="invalid-feedback">
-        Please enter a number in the range 0–100.
-      </div>
-      <input type="range"
-             class="form-range"
-             min="0"
-             max="100"
-             step="0.1"
-             name="saturation"
-             [ngModel]="saturationRead()"
-             (ngModelChange)="saturationChanged($event)"
-             #saturationSlider="ngModel">
+         app-ranged-input
+         [value]="saturation()"
+         (valueChange)="saturationChanged($event)"
+         [precision]="2"
+         [min]="0"
+         [max]="100"
+         unit="%"
+         label="Saturation">
     </div>
 
     <div class="input-c"
-         [class.was-validated]="luminanceField.touched || luminanceField.dirty">
-      <label for="luminanceField" class="col-1 col-form-label">Luminance</label>
-      <div class="col input-group">
-        <input type="number"
-               id="luminanceField"
-               class="form-control"
-               placeholder="0-255"
-               min="0"
-               max="100"
-               step="0.01"
-               name="luminance"
-               [ngModel]="luminanceRead()"
-               (blur)="luminanceChanged(luminanceField.value)"
-               aria-describedby="luminanceHelp"
-               #luminanceField="ngModel">
-        <span class="input-group-text">%</span>
-      </div>
-      <div id="luminanceHelp" class="form-text">
-        0-100
-      </div>
-      <div class="invalid-feedback">
-        Please enter a number in the range 0–100.
-      </div>
-      <input type="range"
-             class="form-range"
-             min="0"
-             max="100"
-             step="0.01"
-             name="luminance"
-             [ngModel]="luminanceRead()"
-             (ngModelChange)="luminanceChanged($event)"
-             #luminanceSlider="ngModel">
+         app-ranged-input
+         [value]="luminance()"
+         (valueChange)="luminanceChanged($event)"
+         [precision]="2"
+         [min]="0"
+         [max]="100"
+         unit="%"
+         label="Luminance">
     </div>
   </form>
 

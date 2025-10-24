@@ -4,13 +4,19 @@
   // Colors
   $primary: vars.$primary,
   $secondary: vars.$secondary,
+  $border-color: vars.$primary,
+
+
+  // Dark mode colors
+  $body-bg-dark: vars.$body-bg-dark,
 
   // Radii
   $border-radius: 0.9rem,
   $border-radius-sm: 0.75rem,
   $input-border-radius: 0.75rem,
 
-  // Dark mode colors
-  //$body-color-dark: vars.$body-bg-dark,
-  $body-bg-dark: vars.$body-bg-dark,
+  // Sliders
+  $form-range-track-height: 0.8rem,
+  $form-range-thumb-height: 1.5rem,
+  $form-range-thumb-bg: var(--bs-secondary),
 );
