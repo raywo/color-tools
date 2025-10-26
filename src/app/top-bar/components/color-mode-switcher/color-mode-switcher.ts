@@ -1,7 +1,7 @@
 import {Component, effect, inject, OnInit, signal} from '@angular/core';
 import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
-import {ColorMode} from '../../models/color-mode.model';
-import {ColorModeService} from '../../services/color-mode-service';
+import {ColorMode} from '../../../models/color-mode.model';
+import {ColorModeService} from '../../../services/color-mode-service';
 
 
 @Component({

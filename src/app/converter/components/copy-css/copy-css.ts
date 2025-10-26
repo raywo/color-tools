@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core';
 import {AsyncPipe} from '@angular/common';
-import {ColorService} from '../../services/color-service';
-import {ColorSpace} from '../../models/color-space.model';
+import {ColorService} from '../../../services/color-service';
+import {ColorSpace} from '../../../models/color-space.model';
 import {map} from 'rxjs';
 
 

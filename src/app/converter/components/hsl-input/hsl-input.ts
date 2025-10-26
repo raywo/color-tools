@@ -1,7 +1,7 @@
 import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorService} from '../../services/color-service';
+import {ColorService} from '../../../services/color-service';
 import {Subscription} from 'rxjs';
-import {inHslAngleRange, inHslPercentRange} from '../../helpers/range.helper';
+import {inHslAngleRange, inHslPercentRange} from '../../../helpers/range.helper';
 import chroma from 'chroma-js';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CopyCss} from '../copy-css/copy-css';

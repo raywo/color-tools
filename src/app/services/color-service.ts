@@ -18,8 +18,14 @@ export class ColorService {
     }
   }
 
+
   public get currentColor(): Color {
     return this._currentColor.value;
+  }
+
+
+  public newRandomColor() {
+    this.currentColor = chroma.random();
   }
 
 }

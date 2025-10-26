@@ -1,0 +1,11 @@
+<label for="pasteTarget">Paste your color here</label>
+<p class="form-text">
+  You can use any supported CSS color format (hex, rgb, hsl).
+</p>
+<input type="text"
+       id="pasteTarget"
+       class="form-control"
+       name="pastedColor"
+       [(ngModel)]="pastedColor"
+       (blur)="colorChanged()"
+       #pasteField="ngModel">

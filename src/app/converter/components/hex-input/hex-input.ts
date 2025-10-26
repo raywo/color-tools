@@ -1,6 +1,6 @@
 import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ColorService} from '../../services/color-service';
+import {ColorService} from '../../../services/color-service';
 import chroma, {Color} from 'chroma-js';
 import {Subscription} from 'rxjs';
 import {CopyCss} from '../copy-css/copy-css';
