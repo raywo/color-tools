@@ -1,14 +1,14 @@
-import {ColorMode} from './color-mode.model';
+import {ColorTheme} from './color-theme.model';
 
 
 export const LOCAL_STORAGE_KEY = "color-tools";
 
 export interface SettingsMap {
-  colorMode: ColorMode;
+  colorTheme: ColorTheme;
 }
 
 export type SettingKey = keyof SettingsMap;
 
 export const EMPTY_SETTINGS: SettingsMap = {
-  colorMode: "dark"
+  colorTheme: "dark"
 };

@@ -1,7 +1,7 @@
 import {Component, effect, inject, OnInit, signal} from '@angular/core';
 import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
-import {ColorMode} from '../../../common/models/color-mode.model';
-import {ColorModeService} from '../../../common/services/color-mode-service';
+import {ColorTheme} from '@common/models/color-theme.model';
+import {ColorThemeService} from '@common/services/color-theme.service';
 
 
 @Component({
@@ -17,18 +17,18 @@ import {ColorModeService} from '../../../common/services/color-mode-service';
 })
 export class ColorModeSwitcher implements OnInit{
 
-  private readonly colorModeService = inject(ColorModeService);
-  protected currentMode = signal<ColorMode>("system");
+  private readonly colorModeService = inject(ColorThemeService);
+  protected currentTheme = signal<ColorTheme>("system");
 
 
   constructor() {
     effect(() => {
-      this.colorModeService.colorMode = this.currentMode();
+      this.colorModeService.colorTheme = this.currentTheme();
     });
   }
 
   public ngOnInit(): void {
-    this.currentMode.set(this.colorModeService.colorMode);
+    this.currentTheme.set(this.colorModeService.colorTheme);
   }
 
 }

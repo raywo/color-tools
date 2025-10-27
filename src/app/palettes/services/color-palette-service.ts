@@ -1,8 +1,8 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import chroma, {Color} from 'chroma-js';
+import {Color} from 'chroma-js';
 import {ColorService} from '@converter/services/color-service';
-import {generateRandomPalette} from '../helper/palette.helper';
+import {generateRandomPalette} from '@palettes/helper/palette.helper';
 
 
 @Injectable({
@@ -60,8 +60,8 @@ export class ColorPaletteService implements OnDestroy {
 
 
   public newRandomPalette() {
-    const baseHsl = {h: Math.random() * 360, s: 0.65, l: 0.5};
-    const startColor = chroma.hsl(baseHsl.h, baseHsl.s, baseHsl.l); // chroma.random();
+    // const baseHsl = {h: Math.random() * 360, s: 0.65, l: 0.5};
+    // const startColor = chroma.hsl(baseHsl.h, baseHsl.s, baseHsl.l); // chroma.random();
 
     // this.palette = generatePalette("muted-analog-split", startColor.hsl()[0]);
     this.palette = generateRandomPalette();

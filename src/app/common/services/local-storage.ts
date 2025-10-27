@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EMPTY_SETTINGS, LOCAL_STORAGE_KEY, SettingKey, SettingsMap} from '../models/local-storage.model';
+import {EMPTY_SETTINGS, LOCAL_STORAGE_KEY, SettingKey, SettingsMap} from '@common/models/local-storage.model';
 
 
 @Injectable({

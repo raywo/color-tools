@@ -1,11 +1,11 @@
 import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorService} from '../../services/color-service';
 import {Subscription} from 'rxjs';
-import {inHslAngleRange, inHslPercentRange} from '../../../common/helpers/range.helper';
 import chroma from 'chroma-js';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CopyCss} from '../copy-css/copy-css';
-import {RangedInput} from '../ranged-input/ranged-input';
+import {inHslAngleRange, inHslPercentRange} from '@common/helpers/hsl.helper';
+import {ColorService} from '@converter/services/color-service';
+import {RangedInput} from '@converter/components/ranged-input/ranged-input';
+import {CopyCss} from '@converter/components/copy-css/copy-css';
 
 
 @Component({

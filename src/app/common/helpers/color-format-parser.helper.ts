@@ -1,5 +1,5 @@
 import chroma, {Color} from 'chroma-js';
-import {inRgbRange} from './range.helper';
+import {inRgbRange} from './rgb.helper';
 
 
 const RGB_PATTERN = /^rgb\((\d{1,3})[,\s+]\s*(\d{1,3})[,\s+]\s*(\d{1,3})\)$/;

@@ -1,19 +1,19 @@
 import {DOCUMENT, inject, Injectable} from '@angular/core';
-import {ColorMode} from '../models/color-mode.model';
 import {BehaviorSubject} from 'rxjs';
 import {LocalStorage} from './local-storage';
+import {ColorTheme} from '@common/models/color-theme.model';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ColorModeService {
+export class ColorThemeService {
 
   private readonly localStorageService = inject(LocalStorage);
   private readonly document = inject(DOCUMENT);
 
-  private readonly _colorMode = new BehaviorSubject<ColorMode>("dark");
-  public readonly colorMode$ = this._colorMode.asObservable();
+  private readonly _colorTheme = new BehaviorSubject<ColorTheme>("dark");
+  public readonly colorTheme$ = this._colorTheme.asObservable();
 
 
   constructor() {
@@ -22,14 +22,14 @@ export class ColorModeService {
 
 
   public updateFromSettings(): void {
-    this.colorMode = this.localStorageService
-      .getOrDefault("colorMode", "dark");
+    this.colorTheme = this.localStorageService
+      .getOrDefault("colorTheme", "dark");
   }
 
 
-  public set colorMode(value: ColorMode) {
-    this._colorMode.next(value);
-    this.localStorageService.set("colorMode", value);
+  public set colorTheme(value: ColorTheme) {
+    this._colorTheme.next(value);
+    this.localStorageService.set("colorTheme", value);
 
     if (value === "system") value = this.getSystemTheme();
 
@@ -37,12 +37,12 @@ export class ColorModeService {
   }
 
 
-  public get colorMode(): ColorMode {
-    return this._colorMode.value;
+  public get colorTheme(): ColorTheme {
+    return this._colorTheme.value;
   }
 
 
-  private getSystemTheme(): ColorMode {
+  private getSystemTheme(): ColorTheme {
     return window
       .matchMedia('(prefers-color-scheme: dark)')
       .matches ? 'dark' : 'light'

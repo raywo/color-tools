@@ -2,11 +2,11 @@ import {ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalEr
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
-import {ColorModeService} from './common/services/color-mode-service';
+import {ColorThemeService} from '@common/services/color-theme.service';
 
 
 function initializeApp(this: void): void {
-  inject(ColorModeService);
+  inject(ColorThemeService);
 }
 
 export const appConfig: ApplicationConfig = {

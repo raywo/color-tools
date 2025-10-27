@@ -1,6 +1,6 @@
 import {Component, DOCUMENT, inject, OnDestroy, signal} from '@angular/core';
-import {ColorService} from '../../services/color-service';
 import {Subscription} from 'rxjs';
+import {ColorService} from '@converter/services/color-service';
 
 
 @Component({

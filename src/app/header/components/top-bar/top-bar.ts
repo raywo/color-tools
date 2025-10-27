@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
-import {ColorModeSwitcher} from '../color-mode-switcher/color-mode-switcher';
-import {ColorService} from '../../../converter/services/color-service';
+import {ColorModeSwitcher} from '@header/components/color-mode-switcher/color-mode-switcher';
+import {ColorService} from '@converter/services/color-service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
 

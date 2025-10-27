@@ -35,3 +35,16 @@ export function clamp01(x: number): number {
 
   return Math.max(0, Math.min(1, max));
 }
+
+export function inHslAngleRange(this: void, value: number | null): value is number {
+  if (value === null) return false;
+
+  return value >= 0 && value <= 360;
+}
+
+export function inHslPercentRange(this: void, value: number | null): value is number {
+  if (value === null) return false;
+
+  return value >= 0 && value <= 100;
+}
+

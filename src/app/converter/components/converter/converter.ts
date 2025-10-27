@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {BackgroundButtons} from "../background-buttons/background-buttons";
-import {ColorPreview} from "../color-preview/color-preview/color-preview";
-import {ColorSwatches} from "../color-swatches/color-swatches";
-import {HexInput} from "../hex-input/hex-input";
-import {HslInput} from "../hsl-input/hsl-input";
-import {PasteTarget} from "../paste-target/paste-target";
-import {RgbInput} from "../rgb-input/rgb-input";
+import {BackgroundButtons} from "@converter/components/background-buttons/background-buttons";
+import {ColorPreview} from "@converter/components/color-preview/color-preview/color-preview";
+import {ColorSwatches} from "@converter/components/color-swatches/color-swatches";
+import {HexInput} from "@converter/components/hex-input/hex-input";
+import {HslInput} from "@converter/components/hsl-input/hsl-input";
+import {PasteTarget} from "@converter/components/paste-target/paste-target";
+import {RgbInput} from "@converter/components/rgb-input/rgb-input";
 
 
 @Component({

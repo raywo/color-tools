@@ -8,20 +8,20 @@
   </button>
   <div ngbDropdownMenu aria-labelledby="colorModeSwitcher">
     <button ngbDropdownItem
-            [class.active]="currentMode() === 'light'"
-            (click)="currentMode.set('light')">
+            [class.active]="currentTheme() === 'light'"
+            (click)="currentTheme.set('light')">
       <i class="bi bi-sun-fill me-2"></i>
       Light
     </button>
     <button ngbDropdownItem
-            [class.active]="currentMode() === 'dark'"
-            (click)="currentMode.set('dark')">
+            [class.active]="currentTheme() === 'dark'"
+            (click)="currentTheme.set('dark')">
       <i class="bi bi-moon-stars-fill me-2"></i>
       Dark
     </button>
     <button ngbDropdownItem
-            [class.active]="currentMode() === 'system'"
-            (click)="currentMode.set('system')">
+            [class.active]="currentTheme() === 'system'"
+            (click)="currentTheme.set('system')">
       <i class="bi bi-circle-half me-2"></i>
       System
     </button>

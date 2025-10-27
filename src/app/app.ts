@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {TopBar} from './header/components/top-bar/top-bar';
+import {TopBar} from '@header/components/top-bar/top-bar';
 import {RouterOutlet} from '@angular/router';
 
 

@@ -1,10 +1,10 @@
 import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorService} from '../../services/color-service';
+import {ColorService} from '@converter/services/color-service';
 import {combineLatest, Subscription} from 'rxjs';
 import chroma, {Color} from 'chroma-js';
-import {ColorSwatch} from '../color-swatch/color-swatch';
+import {ColorSwatch} from '@converter/components/color-swatch/color-swatch';
 import {DecimalPipe} from '@angular/common';
-import {ColorSpace} from '../../../common/models/color-space.model';
+import {ColorSpace} from '@common/models/color-space.model';
 import {FormsModule} from '@angular/forms';
 import {toObservable} from '@angular/core/rxjs-interop';
 
