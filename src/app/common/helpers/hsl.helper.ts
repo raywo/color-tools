@@ -1,0 +1,37 @@
+/**
+ * Clamps a given hue value to the range of 0 to 360 degrees.
+ *
+ * @param {number} h - The hue value to be clamped.
+ * @return {number} The clamped hue value within the range [0, 360).
+ */
+export function clampHue(h: number): number {
+  return (h % 360 + 360) % 360;
+}
+
+
+/**
+ * Normalizes a hue angle to ensure it falls within the range of 0 to 359
+ * degrees.
+ *
+ * @param {number} h - The input hue angle in degrees, which can be any
+ *                     integer, positive or negative.
+ * @return {number} The normalized hue angle, guaranteed to be in the range
+ *                  of 0 to 359 degrees.
+ */
+export function hueWrap(h: number): number {
+  const mod = clampHue(h);
+  return mod === 360 ? 0 : mod;
+}
+
+
+/**
+ * Clamps a given number to the range [0, 1].
+ *
+ * @param {number} x - The number to clamp.
+ * @return {number} The clamped value, guaranteed to be between 0 and 1 (inclusive).
+ */
+export function clamp01(x: number): number {
+  const max = x > 1 ? x / 100 : x;
+
+  return Math.max(0, Math.min(1, max));
+}

@@ -1,17 +1,20 @@
 import {Component, inject} from '@angular/core';
 import {ColorModeSwitcher} from '../color-mode-switcher/color-mode-switcher';
-import {ColorService} from '../../../services/color-service';
+import {ColorService} from '../../../converter/services/color-service';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 
 @Component({
-  selector: 'header[app-top-bar]',
+  selector: 'nav[app-top-bar]',
   imports: [
-    ColorModeSwitcher
+    ColorModeSwitcher,
+    RouterLinkActive,
+    RouterLink
   ],
   templateUrl: './top-bar.html',
   styles: ``,
   host: {
-    "class": "title-bar"
+    "class": "navbar navbar-expand"
   }
 })
 export class TopBar {

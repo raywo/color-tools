@@ -2,7 +2,7 @@ import {ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalEr
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
-import {ColorModeService} from './services/color-mode-service';
+import {ColorModeService} from './common/services/color-mode-service';
 
 
 function initializeApp(this: void): void {

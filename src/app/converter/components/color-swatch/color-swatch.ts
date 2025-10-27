@@ -1,10 +1,10 @@
 import {Component, computed, inject, input} from '@angular/core';
 import {Color} from 'chroma-js';
-import {ColorSpace} from '../../../models/color-space.model';
+import {ColorSpace} from '../../../common/models/color-space.model';
 import {NgTemplateOutlet} from '@angular/common';
 import {KeyValueDisplay} from '../key-value-display/key-value-display';
 import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
-import {ColorService} from '../../../services/color-service';
+import {ColorService} from '../../services/color-service';
 
 
 @Component({

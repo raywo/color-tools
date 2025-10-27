@@ -1,0 +1,7 @@
+@let palette = (palette$ | async) ?? [];
+
+<div class="color-palette">
+  @for (color of palette; track $index) {
+    <app-single-palette-color [color]="color"/>
+  }
+</div>

@@ -19,6 +19,17 @@
   $border-radius-sm: 0.75rem,
   $input-border-radius: 0.75rem,
 
+  // Navbar
+  $navbar-padding-y: 0,
+  //$navbar-padding-x: 0.5rem,
+  //$navbar-nav-link-padding-x: 0.5rem,
+  //$navbar-nav-link-padding-y: 0.5rem,
+  //$navbar-nav-link-font-size: 1.1rem,
+  //$navbar-nav-link-font-weight: 500,
+  //$nav-link-color: var(--bs-secondary),
+  //$navbar-nav-link-hover-color: var(--bs-primary),
+  //$navbar-nav-link-active-color: var(--bs-primary),
+
   // Sliders
   $form-range-track-height: 0.8rem,
   $form-range-thumb-height: 1.5rem,
@@ -27,3 +38,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+.navbar-nav {
+  --bs-nav-link-color: var(--bs-secondary);
+  --bs-nav-link-hover-color: var(--bs-primary);
+  --bs-nav-link-active-color: var(--bs-primary);
+  --bs-navbar-active-color: var(--bs-primary);
+}

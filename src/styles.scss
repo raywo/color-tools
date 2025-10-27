@@ -5,6 +5,8 @@
 @use "bootstrap/scss/bootstrap";
 @use "bootstrap-icons/font/bootstrap-icons.css";
 @use "app/styles/dark-mode";
+@use "app/styles/converter";
+@use "app/styles/color-palette";
 
 
 :root, :host {
@@ -34,18 +36,12 @@ table.color-swatches {
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
   padding-top: 1.5rem;
-  margin-inline: auto;
-  width: fit-content;
 }
 
 .title-bar {
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
   align-items: center;
 
   width: 100%;
@@ -59,10 +55,6 @@ table.color-swatches {
   position: sticky;
   top: 0;
   z-index: 500;
-
-  .github-corner {
-    //margin-inline-end: calc(var(--bs-gutter-x) * -0.5);
-  }
 }
 
 .input {

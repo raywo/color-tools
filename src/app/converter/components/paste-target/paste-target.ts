@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ColorService} from '../../../services/color-service';
-import {colorFrom} from '../../../helpers/color-format-parser.helper';
+import {ColorService} from '../../services/color-service';
+import {colorFrom} from '../../../common/helpers/color-format-parser.helper';
 import {Subscription} from 'rxjs';
 
 
