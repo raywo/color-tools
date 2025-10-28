@@ -1,8 +1,10 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Color} from 'chroma-js';
-import {ColorService} from '@converter/services/color-service';
-import {generateRandomPalette} from '@palettes/helper/palette.helper';
+import {generatePalette} from '@palettes/helper/palette.helper';
+import {PaletteStyle, PaletteStyles} from '@palettes/models/palette-style.model';
+import {NewColor} from '@common/services/new-color';
+import {randomBetween} from '@common/helpers/random.helper';
 
 
 @Injectable({
@@ -10,31 +12,60 @@ import {generateRandomPalette} from '@palettes/helper/palette.helper';
 })
 export class ColorPaletteService implements OnDestroy {
 
-  private readonly colorService = inject(ColorService);
-  private subscription?: Subscription;
+  private readonly newColor = inject(NewColor);
+  private readonly subscriptions: Subscription[] = [];
 
-  private _palette = new BehaviorSubject<Color[]>([]);
+  private readonly _palette = new BehaviorSubject<Color[]>([]);
   public readonly palette$ = this._palette.asObservable();
+
+  private readonly _style = new BehaviorSubject<PaletteStyle>("vibrant-balanced");
+  public readonly style$ = this._style.asObservable();
+
+  private readonly _useRandom = new BehaviorSubject<boolean>(true);
+  public readonly useRandom$ = this._useRandom.asObservable();
 
 
   constructor() {
-    this.subscription = this.colorService.currentColor$
-      .subscribe(() => this.newRandomPalette());
+    this.subscriptions.push(this.newColor.newColor$
+      .subscribe(() => this.newRandomPalette(this.style))
+    );
   }
 
 
   public ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
 
-  public set palette(colors: Color[]) {
+  public get style(): PaletteStyle {
+    return this._style.value;
+  }
+
+
+  public set style(value: PaletteStyle) {
+    this._style.next(value);
+    this.palette = generatePalette(value);
+    // this.newRandomPalette(value, false);
+  }
+
+
+  private set palette(colors: Color[]) {
     this._palette.next(colors);
   }
 
 
   public get palette(): Color[] {
     return this._palette.value;
+  }
+
+
+  public set useRandom(value: boolean) {
+    this._useRandom.next(value);
+  }
+
+
+  public get useRandom(): boolean {
+    return this._useRandom.value;
   }
 
 
@@ -59,12 +90,15 @@ export class ColorPaletteService implements OnDestroy {
    */
 
 
-  public newRandomPalette() {
-    // const baseHsl = {h: Math.random() * 360, s: 0.65, l: 0.5};
-    // const startColor = chroma.hsl(baseHsl.h, baseHsl.s, baseHsl.l); // chroma.random();
+  public newRandomPalette(style: PaletteStyle = "vibrant-balanced") {
+    this.style = this.useRandom ? this.randomStyle() : style;
+  }
 
-    // this.palette = generatePalette("muted-analog-split", startColor.hsl()[0]);
-    this.palette = generateRandomPalette();
+
+  private randomStyle(): PaletteStyle {
+    const randomIndex = Math.floor(randomBetween(0, PaletteStyles.length));
+
+    return PaletteStyles[randomIndex];
   }
 
 }

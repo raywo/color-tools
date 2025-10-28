@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {ColorModeSwitcher} from '@header/components/color-mode-switcher/color-mode-switcher';
-import {ColorService} from '@converter/services/color-service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {NewColor} from '@common/services/new-color';
 
 
 @Component({
@@ -19,10 +19,11 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 })
 export class TopBar {
 
-  private readonly colorService = inject(ColorService);
+  private readonly newColor = inject(NewColor);
+
 
   protected newRandomColor() {
-    this.colorService.newRandomColor();
+    this.newColor.generateNewColor();
   }
 
 }
