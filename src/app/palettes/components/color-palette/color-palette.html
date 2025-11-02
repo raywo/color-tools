@@ -1,11 +1,13 @@
-@let palette = (palette$ | async) ?? [];
+@let palette = (palette$ | async) ?? EMPTY_PALETTE;
 
 <div class="container-fluid color-palette-header mb-3">
   <app-generator-style-switcher/>
 </div>
 
 <div class="color-palette">
-  @for (color of palette; track $index) {
-    <app-single-palette-color [color]="color"/>
+  @for (slot of PALETTE_SLOTS; track $index) {
+    <app-single-palette-color [color]="palette[slot]"
+                              [slot]="slot"
+                              (colorChanged)="onColorChanged($event)"/>
   }
 </div>

@@ -19,7 +19,7 @@ export class GeneratorStyleSwitcher implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   protected readonly style = signal<PaletteStyle>("vibrant-balanced");
-  protected readonly useRandom = signal(true);
+  protected readonly useRandom = signal(false);
 
 
   public ngOnInit() {

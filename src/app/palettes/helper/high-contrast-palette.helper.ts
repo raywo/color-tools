@@ -1,8 +1,9 @@
-import {Color} from 'chroma-js';
-import {fromHsl} from '@common/helpers/colorFromHsl.helper';
+import {fromHsl} from '@common/helpers/color-from-hsl.helper';
 import {vary} from '@palettes/helper/number.helper';
 import {clamp01} from '@common/helpers/hsl.helper';
 import {complement} from '@common/helpers/hue.helper';
+import {Palette} from "@palettes/models/palette.model";
+import {paletteColorFrom} from "@palettes/models/palette-color.model";
 
 
 /**
@@ -12,11 +13,11 @@ import {complement} from '@common/helpers/hue.helper';
  * @param {number} [seedHue] - An optional base hue value in degrees (0-360)
  *                             used to generate the color palette. If not
  *                             provided, a random hue is used.
- * @return {Color[]} An array of high-contrast Color objects representing a
- *                   color palette, including vibrant accents, deep tones,
- *                   and near-white.
+ * @return {PaletteColor[]} An array of high-contrast Color objects
+ *                          representing a color palette, including vibrant
+ *                          accents, deep tones, and near-white.
  */
-export function generateHighContrast(seedHue?: number): Color[] {
+export function generateHighContrast(seedHue?: number): Palette {
   const h0 = seedHue ?? Math.random() * 360;
 
   // Akzent 1 (vibrant)
@@ -54,5 +55,13 @@ export function generateHighContrast(seedHue?: number): Color[] {
     l: clamp01(vary(0.96, 0.02))
   });
 
-  return [accent1, accent2, darkAccent, deep, nearWhite];
+  return {
+    id: crypto.randomUUID(),
+    name: "High Contrast",
+    color0: paletteColorFrom(accent1, "color0"),
+    color1: paletteColorFrom(accent2, "color1"),
+    color2: paletteColorFrom(darkAccent, "color2"),
+    color3: paletteColorFrom(deep, "color3"),
+    color4: paletteColorFrom(nearWhite, "color4"),
+  } as Palette;
 }

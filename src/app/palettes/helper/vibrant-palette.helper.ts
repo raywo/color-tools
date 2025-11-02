@@ -1,9 +1,10 @@
 import {randomBetween} from '@common/helpers/random.helper';
-import {Color} from 'chroma-js';
 import {triad} from '@common/helpers/hue.helper';
-import {fromHsl} from '@common/helpers/colorFromHsl.helper';
+import {fromHsl} from '@common/helpers/color-from-hsl.helper';
 import {vary} from '@palettes/helper/number.helper';
 import {clamp01} from '@common/helpers/hsl.helper';
+import {PaletteColor, paletteColorFrom} from '@palettes/models/palette-color.model';
+import {Palette} from "@palettes/models/palette.model";
 
 
 /**
@@ -12,20 +13,21 @@ import {clamp01} from '@common/helpers/hsl.helper';
  *
  * @param {number} [seedHue] - The hue value to base the color generation on.
  *                             If omitted, a random value is used.
- * @return {Color[]} An array of generated colors, with vibrant and
- *                   complementary characteristics.
+ * @return {PaletteColor[]} An array of generated colors, with vibrant and
+ *                          complementary characteristics.
  */
-export function generateVibrantBalanced(seedHue?: number): Color[] {
+export function generateVibrantBalanced(seedHue?: number): Palette {
   const h0 = seedHue ?? randomBetween(0, 360);
   const tri = triad(h0);
   const baseS = 0.75;
   const baseL = 0.52;
 
   const accents = tri.map(h => fromHsl({
-    h: vary(h, 6),
-    s: clamp01(vary(baseS, 0.10)),
-    l: clamp01(vary(baseL, 0.08))
-  }));
+      h: vary(h, 6),
+      s: clamp01(vary(baseS, 0.10)),
+      l: clamp01(vary(baseL, 0.08))
+    })
+  );
 
   // Helle, gedämpfte Ergänzungstöne
   const light1 = fromHsl({
@@ -40,5 +42,13 @@ export function generateVibrantBalanced(seedHue?: number): Color[] {
     l: clamp01(vary(0.70, 0.06))
   });
 
-  return [...accents, light1, light2];
+  return {
+    id: crypto.randomUUID(),
+    name: "Vibrant Balanced",
+    color0: paletteColorFrom(accents[0], "color0"),
+    color1: paletteColorFrom(accents[1], "color1"),
+    color2: paletteColorFrom(accents[2], "color2"),
+    color3: paletteColorFrom(light1, "color3",),
+    color4: paletteColorFrom(light2, "color4",),
+  } as Palette;
 }

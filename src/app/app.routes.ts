@@ -1,9 +1,15 @@
 import {Routes} from '@angular/router';
-import {Converter} from './converter/components/converter/converter';
-import {ColorPalette} from './palettes/components/color-palette/color-palette';
+import {Converter} from '@converter/components/converter/converter';
+import {ColorPalette} from '@palettes/components/color-palette/color-palette';
 
 
 export const routes: Routes = [
+  {
+    path: "",
+    redirectTo: "/convert",
+    pathMatch: "full"
+  },
+
   {
     path: "convert",
     component: Converter,
@@ -14,11 +20,5 @@ export const routes: Routes = [
     path: "palettes",
     component: ColorPalette,
     pathMatch: "full"
-  },
-
-  {
-    path: "",
-    redirectTo: "/convert",
-    pathMatch: "full"
-  },
+  }
 ];

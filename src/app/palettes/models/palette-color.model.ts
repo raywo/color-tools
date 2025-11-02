@@ -1,0 +1,31 @@
+import chroma, {Color} from 'chroma-js';
+import {PaletteSlot} from "@palettes/models/palette.model";
+
+
+export interface PaletteColor {
+
+  color: Color;
+  slot: PaletteSlot;
+  isPinned: boolean;
+
+}
+
+
+export function paletteColorFrom(color: Color,
+                                 slot: PaletteSlot,
+                                 isPinned = false): PaletteColor {
+  return {
+    color,
+    slot,
+    isPinned
+  };
+}
+
+
+export function genericPaletteColor(slot: PaletteSlot): PaletteColor {
+  return {
+    color: chroma("gray"),
+    slot,
+    isPinned: false
+  } as PaletteColor;
+}

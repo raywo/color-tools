@@ -1,10 +1,11 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {Color} from 'chroma-js';
 import {generatePalette} from '@palettes/helper/palette.helper';
 import {PaletteStyle, PaletteStyles} from '@palettes/models/palette-style.model';
 import {NewColor} from '@common/services/new-color';
 import {randomBetween} from '@common/helpers/random.helper';
+import {PaletteColor} from '@palettes/models/palette-color.model';
+import {EMPTY_PALETTE, Palette, PaletteSlot} from "@palettes/models/palette.model";
 
 
 @Injectable({
@@ -15,13 +16,13 @@ export class ColorPaletteService implements OnDestroy {
   private readonly newColor = inject(NewColor);
   private readonly subscriptions: Subscription[] = [];
 
-  private readonly _palette = new BehaviorSubject<Color[]>([]);
+  private readonly _palette = new BehaviorSubject<Palette>(EMPTY_PALETTE);
   public readonly palette$ = this._palette.asObservable();
 
-  private readonly _style = new BehaviorSubject<PaletteStyle>("vibrant-balanced");
+  private readonly _style = new BehaviorSubject<PaletteStyle>("muted-analog-split");
   public readonly style$ = this._style.asObservable();
 
-  private readonly _useRandom = new BehaviorSubject<boolean>(true);
+  private readonly _useRandom = new BehaviorSubject<boolean>(false);
   public readonly useRandom$ = this._useRandom.asObservable();
 
 
@@ -44,17 +45,30 @@ export class ColorPaletteService implements OnDestroy {
 
   public set style(value: PaletteStyle) {
     this._style.next(value);
+    // console.log(
+    //   "set style to:", value,
+    //   "\ncurrent palette: ", this.palette.map(c => (`hex: ${c.color.hex()}, isPinned: ${c.isPinned}`)).join("\n")
+    // );
     this.palette = generatePalette(value);
-    // this.newRandomPalette(value, false);
   }
 
 
-  private set palette(colors: Color[]) {
-    this._palette.next(colors);
+  public updateColor(color: PaletteColor) {
+    const slot: PaletteSlot = color.slot;
+
+    this.palette = {
+      ...this.palette,
+      [slot]: color
+    };
   }
 
 
-  public get palette(): Color[] {
+  private set palette(palette: Palette) {
+    this._palette.next(palette);
+  }
+
+
+  public get palette(): Palette {
     return this._palette.value;
   }
 
@@ -90,7 +104,7 @@ export class ColorPaletteService implements OnDestroy {
    */
 
 
-  public newRandomPalette(style: PaletteStyle = "vibrant-balanced") {
+  public newRandomPalette(style: PaletteStyle = "muted-analog-split") {
     this.style = this.useRandom ? this.randomStyle() : style;
   }
 
