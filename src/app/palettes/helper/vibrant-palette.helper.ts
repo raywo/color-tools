@@ -5,7 +5,7 @@ import {vary} from '@palettes/helper/number.helper';
 import {clamp01} from '@common/helpers/hsl.helper';
 import {paletteColorFrom} from '@palettes/models/palette-color.model';
 import {Palette} from "@palettes/models/palette.model";
-import {paletteIdFromColors} from "@palettes/helper/palette-id.helper";
+import {paletteIdFromPalette} from "@palettes/helper/palette-id.helper";
 import {colorName} from "@common/helpers/color-name.helper";
 
 
@@ -44,8 +44,8 @@ export function generateVibrantBalanced(seedHue?: number): Palette {
     l: clamp01(vary(0.70, 0.06))
   });
 
-  return {
-    id: paletteIdFromColors([accents[0], accents[1], accents[2], light1, light2], "vibrant-balanced"),
+  const palette: Palette = {
+    id: "",
     name: `Vibrant Balanced – ${colorName(accents[0])}`,
     style: "vibrant-balanced",
     color0: paletteColorFrom(accents[0], "color0"),
@@ -53,5 +53,8 @@ export function generateVibrantBalanced(seedHue?: number): Palette {
     color2: paletteColorFrom(accents[2], "color2"),
     color3: paletteColorFrom(light1, "color3",),
     color4: paletteColorFrom(light2, "color4",),
-  } as Palette;
+  };
+  palette.id = paletteIdFromPalette(palette);
+
+  return palette;
 }

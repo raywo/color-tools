@@ -4,7 +4,7 @@ import {clamp01} from '@common/helpers/hsl.helper';
 import {complement} from '@common/helpers/hue.helper';
 import {Palette} from "@palettes/models/palette.model";
 import {paletteColorFrom} from "@palettes/models/palette-color.model";
-import {paletteIdFromColors} from "@palettes/helper/palette-id.helper";
+import {paletteIdFromPalette} from "@palettes/helper/palette-id.helper";
 import {colorName} from "@common/helpers/color-name.helper";
 
 
@@ -57,8 +57,8 @@ export function generateHighContrast(seedHue?: number): Palette {
     l: clamp01(vary(0.96, 0.02))
   });
 
-  return {
-    id: paletteIdFromColors([accent1, accent2, darkAccent, deep, nearWhite], "high-contrast"),
+  const palette: Palette = {
+    id: "",
     name: `High Contrast – ${colorName(accent1)}`,
     style: "high-contrast",
     color0: paletteColorFrom(accent1, "color0"),
@@ -66,5 +66,8 @@ export function generateHighContrast(seedHue?: number): Palette {
     color2: paletteColorFrom(darkAccent, "color2"),
     color3: paletteColorFrom(deep, "color3"),
     color4: paletteColorFrom(nearWhite, "color4"),
-  } as Palette;
+  };
+  palette.id = paletteIdFromPalette(palette);
+
+  return palette;
 }

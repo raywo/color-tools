@@ -37,7 +37,7 @@ export class ColorPalette {
       const restorable = this.paletteService.isIdRestorable(paletteId);
 
       if (!paletteId || !restorable) {
-        console.info("No palette to restore. Creating new one.")
+        console.info("No palette to restore. Creating new one. ID:", paletteId, "Restorable:", restorable)
         const style = this.paletteService.style;
         const palette = generatePalette(style);
         void this.router.navigate(["/palettes", palette.id]);

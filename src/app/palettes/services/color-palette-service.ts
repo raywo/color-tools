@@ -1,13 +1,11 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Subscription, tap} from 'rxjs';
 import {generatePalette} from '@palettes/helper/palette.helper';
-import {PaletteStyle, PaletteStyles} from '@palettes/models/palette-style.model';
+import {PaletteStyle, randomStyle} from '@palettes/models/palette-style.model';
 import {NewColor} from '@common/services/new-color';
-import {randomBetween} from '@common/helpers/random.helper';
-import {PaletteColor, paletteColorFrom} from '@palettes/models/palette-color.model';
+import {PaletteColor} from '@palettes/models/palette-color.model';
 import {EMPTY_PALETTE, Palette, PaletteSlot} from "@palettes/models/palette.model";
-import {colorsFromPaletteId, paletteIdFromPalette, styleFromPaletteId} from "@palettes/helper/palette-id.helper";
-import {paletteName} from "@palettes/helper/palette-name.helper";
+import {isRestorable, paletteFromId, paletteIdFromPalette} from "@palettes/helper/palette-id.helper";
 import {Router} from "@angular/router";
 
 
@@ -43,10 +41,7 @@ export class ColorPaletteService implements OnDestroy {
   private readonly _palette = new BehaviorSubject<Palette>(EMPTY_PALETTE);
   public readonly palette$ = this._palette.asObservable()
     .pipe(
-      tap(() => {
-        void this.router.navigateByUrl(`/palettes/${(this.palette.id)}`);
-        console.log("navigate")
-      })
+      tap(() => void this.router.navigateByUrl(`/palettes/${(this.palette.id)}`))
     );
 
   private readonly _style = new BehaviorSubject<PaletteStyle>("muted-analog-split");
@@ -85,39 +80,21 @@ export class ColorPaletteService implements OnDestroy {
       [slot]: color
     };
     palette.id = paletteIdFromPalette(palette);
+
     this.palette = palette;
   }
 
 
   public isIdRestorable(paletteId: string): boolean {
-    try {
-      colorsFromPaletteId(paletteId);
-      return true;
-    } catch (err) {
-      return false;
-    }
+    return isRestorable(paletteId);
   }
 
 
   public restorePalette(paletteId: string) {
-    if (!this.isIdRestorable(paletteId)) {
-      throw new Error("Palette ID is not restorable");
-    }
+    const palette = paletteFromId(paletteId);
 
-    const colors = colorsFromPaletteId(paletteId);
-    const style = styleFromPaletteId(paletteId);
-
-    this.style = style;
-    this.palette = {
-      id: paletteId,
-      name: paletteName(style, colors[0]),
-      style,
-      color0: paletteColorFrom(colors[0], "color0"),
-      color1: paletteColorFrom(colors[1], "color1"),
-      color2: paletteColorFrom(colors[2], "color2"),
-      color3: paletteColorFrom(colors[3], "color3"),
-      color4: paletteColorFrom(colors[4], "color4")
-    } as Palette;
+    this.style = palette.style;
+    this.palette = palette;
   }
 
 
@@ -142,15 +119,8 @@ export class ColorPaletteService implements OnDestroy {
 
 
   public newRandomPalette(style: PaletteStyle = "muted-analog-split") {
-    this.style = this.useRandom ? this.randomStyle() : style;
+    this.style = this.useRandom ? randomStyle() : style;
     this.palette = generatePalette(this.style);
-  }
-
-
-  private randomStyle(): PaletteStyle {
-    const randomIndex = Math.floor(randomBetween(0, PaletteStyles.length));
-
-    return PaletteStyles[randomIndex];
   }
 
 }

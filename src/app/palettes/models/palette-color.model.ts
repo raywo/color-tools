@@ -14,10 +14,11 @@ export interface PaletteColor {
 
 export function paletteColorFrom(color: Color,
                                  slot: PaletteSlot,
+                                 startingColor: Color = color,
                                  isPinned = false): PaletteColor {
   return {
     color,
-    startingColor: color,
+    startingColor,
     slot,
     isPinned
   };
