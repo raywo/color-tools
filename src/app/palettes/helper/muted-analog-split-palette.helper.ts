@@ -4,6 +4,8 @@ import {vary} from '@palettes/helper/number.helper';
 import {analogRange, splitComplement} from '@common/helpers/hue.helper';
 import {PaletteColor, paletteColorFrom} from '@palettes/models/palette-color.model';
 import {Palette} from "@palettes/models/palette.model";
+import {paletteIdFromColors} from "@palettes/helper/palette-id.helper";
+import {colorName} from "@common/helpers/color-name.helper";
 
 
 /**
@@ -13,9 +15,10 @@ import {Palette} from "@palettes/models/palette.model";
  * @param {number} [seedHue] - Optional seed hue (in degrees) to generate the
  *                             color palette. If not provided, a random hue
  *                             is used.
- * @return {PaletteColor[]} An array of colors representing the muted analog
- *                          split palette, including neutral, analogous, pastel,
- *                          and complementary tones.
+ * @return {Palette} The palette with the generated colors, representing the
+ *                   muted analog split palette, including neutral, analogous,
+ *                   pastel, and complementary tones.
+ * @return {PaletteColor[]} An array of colors
  */
 export function generateMutedAnalogSplit(seedHue?: number): Palette {
   const h0 = seedHue ?? Math.random() * 360;
@@ -52,8 +55,9 @@ export function generateMutedAnalogSplit(seedHue?: number): Palette {
   });
 
   return {
-    id: crypto.randomUUID(),
-    name: "Muted Analog Split",
+    id: paletteIdFromColors([neutral, analogs[0], pastel, counter, analogs[1]], "muted-analog-split"),
+    name: `Muted Analog Split – ${colorName(neutral)}`,
+    style: "muted-analog-split",
     color0: paletteColorFrom(neutral, "color0", true),
     color1: paletteColorFrom(analogs[0], "color1"),
     color2: paletteColorFrom(pastel, "color2"),

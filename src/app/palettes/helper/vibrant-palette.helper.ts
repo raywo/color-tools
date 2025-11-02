@@ -3,8 +3,10 @@ import {triad} from '@common/helpers/hue.helper';
 import {fromHsl} from '@common/helpers/color-from-hsl.helper';
 import {vary} from '@palettes/helper/number.helper';
 import {clamp01} from '@common/helpers/hsl.helper';
-import {PaletteColor, paletteColorFrom} from '@palettes/models/palette-color.model';
+import {paletteColorFrom} from '@palettes/models/palette-color.model';
 import {Palette} from "@palettes/models/palette.model";
+import {paletteIdFromColors} from "@palettes/helper/palette-id.helper";
+import {colorName} from "@common/helpers/color-name.helper";
 
 
 /**
@@ -13,8 +15,8 @@ import {Palette} from "@palettes/models/palette.model";
  *
  * @param {number} [seedHue] - The hue value to base the color generation on.
  *                             If omitted, a random value is used.
- * @return {PaletteColor[]} An array of generated colors, with vibrant and
- *                          complementary characteristics.
+ * @return {Palette} The palette with the generated colors, with vibrant and
+ *                   complementary characteristics.
  */
 export function generateVibrantBalanced(seedHue?: number): Palette {
   const h0 = seedHue ?? randomBetween(0, 360);
@@ -43,8 +45,9 @@ export function generateVibrantBalanced(seedHue?: number): Palette {
   });
 
   return {
-    id: crypto.randomUUID(),
-    name: "Vibrant Balanced",
+    id: paletteIdFromColors([accents[0], accents[1], accents[2], light1, light2], "vibrant-balanced"),
+    name: `Vibrant Balanced – ${colorName(accents[0])}`,
+    style: "vibrant-balanced",
     color0: paletteColorFrom(accents[0], "color0"),
     color1: paletteColorFrom(accents[1], "color1"),
     color2: paletteColorFrom(accents[2], "color2"),

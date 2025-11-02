@@ -1,11 +1,11 @@
 import {Component, computed, input, output, signal} from '@angular/core';
-import ColorNamer from 'color-namer';
 import {contrastingColor, contrastingMutedColor} from '@common/helpers/contrasting-color.helper';
 import {ToggleButton} from '@common/components/toggle-button/toggle-button';
 import {PaletteColor} from "@palettes/models/palette-color.model";
 import {PaletteSlot} from "@palettes/models/palette.model";
 import {SingleColorShades} from "@palettes/components/single-color-shades/single-color-shades";
 import {Color} from "chroma-js";
+import {colorName} from "@common/helpers/color-name.helper";
 
 
 @Component({
@@ -20,25 +20,7 @@ import {Color} from "chroma-js";
 export class SinglePaletteColor {
 
   protected readonly colorName = computed(() => {
-    const names = ColorNamer(this.color().color.hex());
-    const allColors = Object.values(names)
-      .flat()
-      .sort((a, b) => a.distance - b.distance);
-
-    if (!allColors.length) return "Unknown";
-
-    const bestOverall = allColors[0];
-
-    const pantoneList = names.pantone;
-    const bestPantone = pantoneList.length ?
-      pantoneList.sort((a, b) => a.distance - b.distance)[0]
-      : undefined;
-
-    if (bestPantone && bestPantone.distance <= bestOverall.distance + 5) {
-      return bestPantone.name;
-    }
-
-    return bestOverall.name;
+    return colorName(this.color().color);
   });
 
   protected readonly colorHex = computed(() => {
