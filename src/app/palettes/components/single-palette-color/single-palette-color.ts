@@ -1,15 +1,18 @@
-import {Component, computed, input, output} from '@angular/core';
+import {Component, computed, input, output, signal} from '@angular/core';
 import ColorNamer from 'color-namer';
 import {contrastingColor, contrastingMutedColor} from '@common/helpers/contrasting-color.helper';
 import {ToggleButton} from '@common/components/toggle-button/toggle-button';
 import {PaletteColor} from "@palettes/models/palette-color.model";
 import {PaletteSlot} from "@palettes/models/palette.model";
+import {SingleColorShades} from "@palettes/components/single-color-shades/single-color-shades";
+import {Color} from "chroma-js";
 
 
 @Component({
   selector: 'app-single-palette-color',
   imports: [
-    ToggleButton
+    ToggleButton,
+    SingleColorShades
   ],
   templateUrl: './single-palette-color.html',
   styles: ``,
@@ -52,7 +55,9 @@ export class SinglePaletteColor {
 
   protected readonly isPinned = computed(() => {
     return this.color().isPinned;
-  })
+  });
+
+  protected readonly showShades = signal(false);
 
 
   public readonly color = input.required<PaletteColor>();
@@ -70,6 +75,20 @@ export class SinglePaletteColor {
       ...this.color(),
       isPinned: current
     });
+  }
+
+
+  protected showTintsAndShades() {
+    this.showShades.set(true);
+  }
+
+
+  protected updateColor(color: Color) {
+    this.showShades.set(false);
+    this.colorChanged.emit({
+      ...this.color(),
+      color
+    })
   }
 
 }

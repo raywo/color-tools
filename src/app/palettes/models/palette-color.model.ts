@@ -5,6 +5,7 @@ import {PaletteSlot} from "@palettes/models/palette.model";
 export interface PaletteColor {
 
   color: Color;
+  startingColor: Color;
   slot: PaletteSlot;
   isPinned: boolean;
 
@@ -16,6 +17,7 @@ export function paletteColorFrom(color: Color,
                                  isPinned = false): PaletteColor {
   return {
     color,
+    startingColor: color,
     slot,
     isPinned
   };
@@ -25,6 +27,7 @@ export function paletteColorFrom(color: Color,
 export function genericPaletteColor(slot: PaletteSlot): PaletteColor {
   return {
     color: chroma("gray"),
+    startingColor: chroma("gray"),
     slot,
     isPinned: false
   } as PaletteColor;
