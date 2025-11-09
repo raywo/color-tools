@@ -113,7 +113,7 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "baseHref": "https://raywo-personal.github.io/color-tools/",
+            "cname": "color-tools.skillbird.de",
             "buildTarget": "ColorTools:build:gh-pages"
           }
         }
