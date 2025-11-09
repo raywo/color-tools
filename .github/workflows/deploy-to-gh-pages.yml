@@ -25,7 +25,8 @@ jobs:
 
       - name: Install dependencies and deploy the app
         env:
+          CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm install
-          pnpm run deploy
+          pnpm run -- deploy --name="${{vars.NAME}}" --email=${{vars.EMAIL}}
