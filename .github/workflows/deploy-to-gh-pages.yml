@@ -44,9 +44,25 @@ jobs:
     if: github.event_name != 'pull_request'
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
       - name: Deploy to GitHub Pages
         env:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          pnpm install
           pnpm run -- deploy --name="${{vars.NAME}}" --email=${{vars.EMAIL}}
