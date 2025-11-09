@@ -1,6 +1,6 @@
 <div class="key-value-display">
   <small class="key">{{ key() }}</small>
   <div class="value">
-    {{ value() | number: digitsInfo() }}
+    {{ sanitizedValue() | number: digitsInfo() }}
   </div>
 </div>
