@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {ColorService} from '../../../../services/color-service';
+import {ColorService} from '@converter/services/color-service';
 import {AsyncPipe} from '@angular/common';
 
 

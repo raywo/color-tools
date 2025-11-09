@@ -1,11 +1,11 @@
 import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ColorService} from '../../../services/color-service';
+import {ColorService} from '@converter/services/color-service';
 import {Subscription} from 'rxjs';
 import chroma from 'chroma-js';
-import {inRgbRange} from '../../../helpers/range.helper';
-import {CopyCss} from '../copy-css/copy-css';
-import {RangedInput} from '../ranged-input/ranged-input';
+import {inRgbRange} from '@common/helpers/rgb.helper';
+import {CopyCss} from '@converter/components/copy-css/copy-css';
+import {RangedInput} from '@converter/components/ranged-input/ranged-input';
 
 
 @Component({

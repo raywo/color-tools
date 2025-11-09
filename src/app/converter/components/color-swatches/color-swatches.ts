@@ -1,12 +1,13 @@
 import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorService} from '../../../services/color-service';
+import {ColorService} from '@converter/services/color-service';
 import {combineLatest, Subscription} from 'rxjs';
-import chroma, {Color} from 'chroma-js';
-import {ColorSwatch} from '../color-swatch/color-swatch';
+import {Color} from 'chroma-js';
+import {ColorSwatch} from '@converter/components/color-swatch/color-swatch';
 import {DecimalPipe} from '@angular/common';
-import {ColorSpace} from '../../../models/color-space.model';
+import {ColorSpace} from '@common/models/color-space.model';
 import {FormsModule} from '@angular/forms';
 import {toObservable} from '@angular/core/rxjs-interop';
+import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
 
 
 @Component({
@@ -47,24 +48,8 @@ export class ColorSwatches implements OnInit, OnDestroy {
   public ngOnInit() {
     this.subscription = combineLatest([this.currentColor$, this.correctLightness$, this.useBezier$])
       .subscribe(([color, correctLightness, useBezier]) => {
-        let colorToWhite = [color.hex(), "white"];
-        let colorToBlack = [color.hex(), "black"];
-
-        let lighterScale = chroma.scale(colorToWhite);
-        let darkerScale = chroma.scale(colorToBlack);
-
-        if (useBezier) {
-          lighterScale = chroma.bezier(colorToWhite).scale();
-          darkerScale = chroma.bezier(colorToBlack).scale();
-        }
-
-        if (correctLightness) {
-          lighterScale = lighterScale.correctLightness();
-          darkerScale = darkerScale.correctLightness();
-        }
-
-        const lighterColors: Color[] = lighterScale.colors(11, null);
-        let darkerColors: Color[] = darkerScale.colors(11, null);
+        const lighterColors = createTints(color, useBezier, correctLightness);
+        const darkerColors = createShades(color, useBezier, correctLightness);
 
         this.lighterColors.set(lighterColors);
         this.darkerColors.set(darkerColors);

@@ -1,0 +1,13 @@
+@for (shade of shades(); track $index) {
+  <div class="shade clickable"
+       [style]="{'--ct-shade-bg': shade, '--ct-shade-color': textColor(shade)}"
+       (click)="onShadeClick(shade)">
+    <div class="shade-base-label"
+         [class.show]="isBaseColor(shade)">
+      <i class="bi bi-asterisk"></i>
+    </div>
+    <div class="shade-label">
+      {{ shade.hex().toUpperCase() }}
+    </div>
+  </div>
+}
