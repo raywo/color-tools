@@ -9,6 +9,14 @@
 @use "app/styles/color-palette";
 
 
+/* Override Bootstrap Icons font-display. "swap" is recommended. */
+@font-face {
+  font-display: swap;
+  font-family: "bootstrap-icons";
+  src: url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"),
+  url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
+}
+
 :root, :host {
   --ct-header-height: 80px;
   --ct-header-bg: var(--bs-body-bg);
