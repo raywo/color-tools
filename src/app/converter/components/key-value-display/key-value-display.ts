@@ -12,6 +12,10 @@ import {DecimalPipe} from '@angular/common';
 })
 export class KeyValueDisplay {
 
+  protected readonly sanitizedValue = computed(() => {
+    return isNaN(this.value()) ? 0 : this.value();
+  });
+
   public readonly key = input.required<string>();
   public readonly value = input.required<number>();
   public readonly precision = input<number>(2);
