@@ -1,34 +1,36 @@
 <div class="title-bar">
-    <a class="navbar-brand" href="/">
+  <a class="navbar-brand" href="/">
     <h1>
       <img src="favicon.svg" alt="ColorTools Logo" width="32" height="32">
       <span class="ms-2 logo-light">Color</span><span class="logo-bold">Tools</span>
     </h1>
   </a>
 
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link"
-           routerLinkActive="active"
-           [routerLink]="['/convert']">
-          Converter
-        </a>
-      </li>
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link"
+         routerLinkActive="active"
+         [routerLink]="['/convert']">
+        Converter
+      </a>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link"
-           routerLinkActive="active"
-           [routerLink]="['/palettes']">
-          Color Palette
-        </a>
-      </li>
-    </ul>
+    @let paletteId = (paletteId$ | async) ?? "";
+
+    <li class="nav-item">
+      <a class="nav-link"
+         routerLinkActive="active"
+         [routerLink]="['/palettes', paletteId]">
+        Color Palette
+      </a>
+    </li>
+  </ul>
 
   <div class="d-flex align-items-center ms-auto">
     <button type="button"
             class="btn btn-outline-primary"
-            (click)="newRandomColor()">
-      New Random Color
+            (click)="triggerNew()">
+      {{ triggerNewCaption() }}
     </button>
 
     <app-color-mode-switcher/>

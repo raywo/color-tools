@@ -1,11 +1,20 @@
 import {Injectable} from '@angular/core';
 import {EMPTY_SETTINGS, LOCAL_STORAGE_KEY, SettingKey, SettingsMap} from '@common/models/local-storage.model';
+import {BehaviorSubject} from "rxjs";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorage {
+
+  private readonly settings = new Map<SettingKey, BehaviorSubject<SettingsMap[SettingKey]>>();
+
+
+  constructor() {
+    this.initSettings();
+  }
+
 
   public set<K extends SettingKey>(key: K, value: SettingsMap[K]): void {
     const currentSettings = this.getAllSettings();
@@ -15,6 +24,7 @@ export class LocalStorage {
     };
 
     this.saveAllSettings(newSettings);
+    this.settings.get(key)?.next(value);
   }
 
 
@@ -29,9 +39,14 @@ export class LocalStorage {
     return v ?? fallback;
   }
 
+  public get$<K extends SettingKey>(key: K): BehaviorSubject<SettingsMap[K]> {
+    return this.settings.get(key) as BehaviorSubject<SettingsMap[K]>;
+  }
+
 
   public clearSettings(): void {
     localStorage.clear();
+    this.initSettings();
   }
 
 
@@ -46,6 +61,16 @@ export class LocalStorage {
 
   private saveAllSettings(settings: SettingsMap): void {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(settings));
+  }
+
+
+  private initSettings(): void {
+    const currentSettings = this.getAllSettings();
+
+    Object.keys(EMPTY_SETTINGS).forEach(key => {
+      const typedKey = key as SettingKey;
+      this.settings.set(typedKey, new BehaviorSubject(currentSettings[typedKey]));
+    });
   }
 
 }
