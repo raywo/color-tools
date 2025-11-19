@@ -7,7 +7,7 @@ import {PaletteColor} from '@palettes/models/palette-color.model';
 import {EMPTY_PALETTE, Palette, PaletteSlot} from "@palettes/models/palette.model";
 import {isRestorable, paletteFromId, paletteIdFromPalette} from "@palettes/helper/palette-id.helper";
 import {Router} from "@angular/router";
-import {LocalStorage} from "@common/services/local-storage";
+import {LocalStorage} from "@common/services/local-storage.service";
 
 
 /*

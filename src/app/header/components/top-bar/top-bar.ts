@@ -1,9 +1,9 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorModeSwitcher} from '@header/components/color-mode-switcher/color-mode-switcher';
+import {ColorThemeSwitcher} from '@header/components/color-theme-switcher/color-theme-switcher';
 import {EventType, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {NewClick} from '@common/services/new-click.service';
 import {filter, map, Subscription} from "rxjs";
-import {LocalStorage} from "@common/services/local-storage";
+import {LocalStorage} from "@common/services/local-storage.service";
 import {AsyncPipe} from "@angular/common";
 import {NewClickSource, routePathToSource} from "@common/models/new-click-source.model";
 
@@ -11,7 +11,7 @@ import {NewClickSource, routePathToSource} from "@common/models/new-click-source
 @Component({
   selector: 'nav[app-top-bar]',
   imports: [
-    ColorModeSwitcher,
+    ColorThemeSwitcher,
     RouterLinkActive,
     RouterLink,
     AsyncPipe

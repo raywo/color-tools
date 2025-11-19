@@ -4,6 +4,7 @@ import {ColorTheme} from './color-theme.model';
 export const LOCAL_STORAGE_KEY = "color-tools";
 
 export interface SettingsMap {
+  currentColor: string;
   colorTheme: ColorTheme;
   currentPaletteId: string;
 }
@@ -11,6 +12,7 @@ export interface SettingsMap {
 export type SettingKey = keyof SettingsMap;
 
 export const EMPTY_SETTINGS: SettingsMap = {
+  currentColor: "#787878",
   colorTheme: "dark",
   currentPaletteId: ""
 };
