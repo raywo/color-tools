@@ -4,6 +4,9 @@ import chroma, {Color} from 'chroma-js';
 import {NewClick} from '@common/services/new-click.service';
 
 
+/**
+ * @deprecated
+ */
 @Injectable({
   providedIn: 'root'
 })

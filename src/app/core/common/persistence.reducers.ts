@@ -5,6 +5,7 @@ import {LocalStorage} from "@common/services/local-storage.service";
 import {generatePalette} from "@palettes/helper/palette.helper";
 import {isRestorable, paletteFromId} from "@palettes/helper/palette-id.helper";
 import chroma from "chroma-js";
+import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
 
 
 export function loadAppStateReducer(
@@ -18,6 +19,9 @@ export function loadAppStateReducer(
   const colorFromStorage = persistence.get("currentColor");
   const currentColor = colorFromStorage ? chroma(colorFromStorage) : chroma.random();
 
+  const tintColors = createTints(currentColor, state.useBezier, state.correctLightness);
+  const shadeColors = createShades(currentColor, state.useBezier, state.correctLightness);
+
   const paletteId = persistence.get("currentPaletteId") ?? "";
   const restorableId = isRestorable(paletteId);
   const style = state.paletteStyle;
@@ -25,6 +29,8 @@ export function loadAppStateReducer(
   return {
     colorTheme: persistence.getOrDefault("colorTheme", "dark"),
     currentColor,
+    tintColors,
+    shadeColors,
     currentPalette: restorableId ? paletteFromId(paletteId) : generatePalette(style)
   }
 }

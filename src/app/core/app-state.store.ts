@@ -6,7 +6,7 @@ import {generatePalette} from "@palettes/helper/palette.helper";
 import {signalStore, withState} from "@ngrx/signals";
 import {converterEvents} from "./converter/converter.events";
 import {Events, on, withEffects, withReducer} from "@ngrx/signals/events";
-import {colorChangedReducer} from "./converter/converter.reducers";
+import {colorChangedReducer, correctLightnessReducer, displayColorSpaceReducer, newRandomColorReducer, useAsBackgroundReducer, useBezierReducer} from "./converter/converter.reducers";
 import {inject} from "@angular/core";
 import {LocalStorage} from "@common/services/local-storage.service";
 import {map} from "rxjs";
@@ -19,6 +19,8 @@ import {colorThemeChangedReducer} from "./common/common.reducers";
 import {ColorThemeService} from "@common/services/color-theme.service";
 import {colorThemeChangeEffect} from "./common/common.effects";
 import {saveStateEffect} from "./common/persistence.effects";
+import {colorChangedEffect, useAsBackgroundChangedEffect} from "./converter/converter.effects";
+import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
 
 
 export type AppState = {
@@ -28,6 +30,8 @@ export type AppState = {
   correctLightness: boolean;
   useBezier: boolean;
   displayColorSpace: ColorSpace;
+  tintColors: Color[];
+  shadeColors: Color[];
 
   // Palette related
   paletteStyle: PaletteStyle;
@@ -38,12 +42,15 @@ export type AppState = {
   colorTheme: ColorTheme;
 }
 
+const initialColor = chroma.random();
 const initialState: AppState = {
-  currentColor: chroma.random(),
+  currentColor: initialColor,
   useAsBackground: false,
   correctLightness: true,
   useBezier: true,
   displayColorSpace: "hsl",
+  tintColors: createTints(initialColor, true, true),
+  shadeColors: createShades(initialColor, true, true),
 
   paletteStyle: "muted-analog-split",
   useRandomStyle: false,
@@ -52,13 +59,20 @@ const initialState: AppState = {
   colorTheme: "system"
 };
 
+console.log("initial state: ", initialState, "\ninitial color: ", initialColor, initialColor.hex())
+
 export const AppStateStore = signalStore(
   {providedIn: "root"},
   withState(initialState),
   withReducer(
     on(persistenceEvents.loadAppState, loadAppStateReducer),
     on(commonEvents.colorThemeChanged, colorThemeChangedReducer),
-    on(converterEvents.colorChanged, colorChangedReducer)
+    on(converterEvents.newRandomColor, newRandomColorReducer),
+    on(converterEvents.colorChanged, colorChangedReducer),
+    on(converterEvents.useAsBackgroundChanged, useAsBackgroundReducer),
+    on(converterEvents.correctLightnessChanged, correctLightnessReducer),
+    on(converterEvents.useBezierChanged, useBezierReducer),
+    on(converterEvents.displayColorSpaceChanged, displayColorSpaceReducer)
   ),
   withEffects(
     (
@@ -69,9 +83,18 @@ export const AppStateStore = signalStore(
     ) => ({
       setColorTheme$: colorThemeChangeEffect(events, themeService),
 
+      setBackgroundColor$: useAsBackgroundChangedEffect(
+        events,
+        themeService,
+        store
+      ),
+
+      colorChanged$: colorChangedEffect(events, themeService, store),
+
       anyPersistableEvents$: events
         .on(
           commonEvents.colorThemeChanged,
+          converterEvents.newRandomColor,
           converterEvents.colorChanged,
           palettesEvents.paletteChanged
         )

@@ -9,7 +9,8 @@
              name="correctLightness"
              role="switch"
              switch
-             [(ngModel)]="correctLightness">
+             [ngModel]="correctLightness"
+             (ngModelChange)="useCorrectLightness($event)">
       <label class="form-check-label" for="correctLightness">Correct lightness</label>
     </div>
 
@@ -20,7 +21,8 @@
              name="useBezier"
              role="switch"
              switch
-             [(ngModel)]="useBezier">
+             [ngModel]="useBezier"
+             (ngModelChange)="useBezierChanged($event)">
       <label class="form-check-label" for="useBezier">Use bezier interpolation</label>
     </div>
 
@@ -29,20 +31,20 @@
          aria-label="Color mode selector">
       <button type="button"
               class="btn btn-outline-secondary"
-              [class.active]="colorMode() === 'hex'"
-              (click)="colorMode.set('hex')">
+              [class.active]="colorSpace() === 'hex'"
+              (click)="useColorSpace('hex')">
         Hex
       </button>
       <button type="button"
               class="btn btn-outline-secondary"
-              [class.active]="colorMode() === 'rgb'"
-              (click)="colorMode.set('rgb')">
+              [class.active]="colorSpace() === 'rgb'"
+              (click)="useColorSpace('rgb')">
         RGB
       </button>
       <button type="button"
               class="btn btn-outline-secondary"
-              [class.active]="colorMode() === 'hsl'"
-              (click)="colorMode.set('hsl')">
+              [class.active]="colorSpace() === 'hsl'"
+              (click)="useColorSpace('hsl')">
         HSL
       </button>
     </div>
@@ -63,16 +65,16 @@
   </thead>
   <tbody>
   <tr>
-    @for (color of lighterColors(); track $index) {
+    @for (color of tintColors(); track $index) {
       <td>
-        <app-color-swatch [color]="color" [colorMode]="colorMode()"/>
+        <app-color-swatch [color]="color" [colorMode]="colorSpace()"/>
       </td>
     }
   </tr>
   <tr>
-    @for (color of darkerColors(); track $index) {
+    @for (color of shadeColors(); track $index) {
       <td>
-        <app-color-swatch [color]="color" [colorMode]="colorMode()"/>
+        <app-color-swatch [color]="color" [colorMode]="colorSpace()"/>
       </td>
     }
   </tr>

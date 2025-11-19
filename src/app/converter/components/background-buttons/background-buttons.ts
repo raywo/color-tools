@@ -1,6 +1,7 @@
-import {Component, DOCUMENT, inject, OnDestroy, signal} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {ColorService} from '@converter/services/color-service';
+import {Component, inject} from '@angular/core';
+import {injectDispatch} from "@ngrx/signals/events";
+import {converterEvents} from "@core/converter/converter.events";
+import {AppStateStore} from "@core/app-state.store";
 
 
 @Component({
@@ -9,35 +10,22 @@ import {ColorService} from '@converter/services/color-service';
   templateUrl: './background-buttons.html',
   styles: ``
 })
-export class BackgroundButtons implements OnDestroy {
+export class BackgroundButtons {
 
-  private readonly colorService = inject(ColorService);
-  private readonly document = inject(DOCUMENT);
-
-  private subscription?: Subscription;
-
-  protected readonly useBackground = signal(false);
+  readonly #stateStore = inject(AppStateStore);
+  readonly #dispatch = injectDispatch(converterEvents);
 
 
-  public ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
+  protected readonly useBackground = this.#stateStore.useAsBackground;
 
 
   protected useAsBackground() {
-    this.useBackground.set(true);
-    this.subscription?.unsubscribe();
-    this.subscription = this.colorService.currentColor$
-      .subscribe(color => {
-        this.document.body.style = `--ct-body-bg: ${color.hex()};`;
-      });
+    this.#dispatch.useAsBackgroundChanged(true);
   }
 
 
   protected restoreBackground() {
-    this.useBackground.set(false);
-    this.subscription?.unsubscribe();
-    this.document.body.style = "";
+    this.#dispatch.useAsBackgroundChanged(false);
   }
 
 }
