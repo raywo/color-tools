@@ -5,10 +5,12 @@ export const LOCAL_STORAGE_KEY = "color-tools";
 
 export interface SettingsMap {
   colorTheme: ColorTheme;
+  currentPaletteId: string;
 }
 
 export type SettingKey = keyof SettingsMap;
 
 export const EMPTY_SETTINGS: SettingsMap = {
-  colorTheme: "dark"
+  colorTheme: "dark",
+  currentPaletteId: ""
 };

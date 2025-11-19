@@ -1,7 +1,11 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ColorModeSwitcher} from '@header/components/color-mode-switcher/color-mode-switcher';
-import {RouterLink, RouterLinkActive} from '@angular/router';
-import {NewColor} from '@common/services/new-color';
+import {EventType, Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {NewClick} from '@common/services/new-click.service';
+import {filter, map, Subscription} from "rxjs";
+import {LocalStorage} from "@common/services/local-storage";
+import {AsyncPipe} from "@angular/common";
+import {NewClickSource, routePathToSource} from "@common/models/new-click-source.model";
 
 
 @Component({
@@ -9,7 +13,8 @@ import {NewColor} from '@common/services/new-color';
   imports: [
     ColorModeSwitcher,
     RouterLinkActive,
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './top-bar.html',
   styles: ``,
@@ -17,13 +22,45 @@ import {NewColor} from '@common/services/new-color';
     "class": "navbar navbar-expand"
   }
 })
-export class TopBar {
+export class TopBar implements OnInit, OnDestroy {
 
-  private readonly newColor = inject(NewColor);
+  private readonly router = inject(Router);
+  private readonly newClick = inject(NewClick);
+  private readonly settings = inject(LocalStorage);
+
+  private subscription?: Subscription;
+  private newClickSource: NewClickSource = "convert";
+
+  protected readonly triggerNewCaption = signal("New random color");
+  protected readonly paletteId$ = this.settings.get$("currentPaletteId");
 
 
-  protected newRandomColor() {
-    this.newColor.generateNewColor();
+  public ngOnInit() {
+    this.subscription = this.router.events
+      .pipe(
+        filter(event => event.type === EventType.NavigationEnd),
+        map(event => event.urlAfterRedirects)
+      )
+      .subscribe(path => {
+        this.newClickSource = routePathToSource(path);
+
+        if (this.newClickSource === "palettes") {
+          this.triggerNewCaption.set("New palette");
+          return;
+        }
+
+        this.triggerNewCaption.set("New color");
+      });
+  }
+
+
+  public ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
+
+  protected triggerNew() {
+    this.newClick.triggerNew(this.newClickSource);
   }
 
 }

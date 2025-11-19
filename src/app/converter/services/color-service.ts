@@ -1,7 +1,7 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {BehaviorSubject, filter, Subscription} from 'rxjs';
 import chroma, {Color} from 'chroma-js';
-import {NewColor} from '@common/services/new-color';
+import {NewClick} from '@common/services/new-click.service';
 
 
 @Injectable({
@@ -9,7 +9,7 @@ import {NewColor} from '@common/services/new-color';
 })
 export class ColorService implements OnDestroy {
 
-  private readonly newColor = inject(NewColor);
+  private readonly newColor = inject(NewClick);
   private readonly subscription?: Subscription;
 
   private readonly _currentColor = new BehaviorSubject<Color>(chroma.random());
@@ -17,7 +17,9 @@ export class ColorService implements OnDestroy {
 
 
   constructor() {
-    this.subscription = this.newColor.newColor$
+    this.subscription = this.newColor
+      .newSource$
+      .pipe(filter(source => source === "convert"))
       .subscribe(() => this.newRandomColor());
   }
 

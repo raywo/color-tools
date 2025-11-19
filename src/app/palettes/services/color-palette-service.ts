@@ -1,12 +1,13 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
-import {BehaviorSubject, Subscription, tap} from 'rxjs';
+import {BehaviorSubject, filter, Subscription, tap} from 'rxjs';
 import {generatePalette} from '@palettes/helper/palette.helper';
 import {PaletteStyle, randomStyle} from '@palettes/models/palette-style.model';
-import {NewColor} from '@common/services/new-color';
+import {NewClick} from '@common/services/new-click.service';
 import {PaletteColor} from '@palettes/models/palette-color.model';
 import {EMPTY_PALETTE, Palette, PaletteSlot} from "@palettes/models/palette.model";
 import {isRestorable, paletteFromId, paletteIdFromPalette} from "@palettes/helper/palette-id.helper";
 import {Router} from "@angular/router";
+import {LocalStorage} from "@common/services/local-storage";
 
 
 /*
@@ -34,8 +35,9 @@ import {Router} from "@angular/router";
 })
 export class ColorPaletteService implements OnDestroy {
 
+  private readonly settings = inject(LocalStorage);
   private readonly router = inject(Router);
-  private readonly newColor = inject(NewColor);
+  private readonly newColor = inject(NewClick);
   private readonly subscriptions: Subscription[] = [];
 
   private readonly _palette = new BehaviorSubject<Palette>(EMPTY_PALETTE);
@@ -52,8 +54,11 @@ export class ColorPaletteService implements OnDestroy {
 
 
   constructor() {
-    this.subscriptions.push(this.newColor.newColor$
-      .subscribe(() => this.newRandomPalette(this.style)));
+    this.subscriptions.push(
+      this.newColor.newSource$
+        .pipe(filter(source => source === "palettes"))
+        .subscribe(() => this.newRandomPalette(this.style))
+    );
   }
 
 
@@ -100,6 +105,7 @@ export class ColorPaletteService implements OnDestroy {
 
   private set palette(palette: Palette) {
     this._palette.next(palette);
+    this.settings.set("currentPaletteId", palette.id);
   }
 
 
