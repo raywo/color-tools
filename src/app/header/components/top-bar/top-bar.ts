@@ -1,20 +1,20 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorModeSwitcher} from '@header/components/color-mode-switcher/color-mode-switcher';
+import {ColorThemeSwitcher} from '@header/components/color-theme-switcher/color-theme-switcher';
 import {EventType, Router, RouterLink, RouterLinkActive} from '@angular/router';
-import {NewClick} from '@common/services/new-click.service';
 import {filter, map, Subscription} from "rxjs";
-import {LocalStorage} from "@common/services/local-storage";
-import {AsyncPipe} from "@angular/common";
 import {NewClickSource, routePathToSource} from "@common/models/new-click-source.model";
+import {injectDispatch} from "@ngrx/signals/events";
+import {converterEvents} from "@core/converter/converter.events";
+import {AppStateStore} from "@core/app-state.store";
+import {palettesEvents} from "@core/palettes/palettes.events";
 
 
 @Component({
   selector: 'nav[app-top-bar]',
   imports: [
-    ColorModeSwitcher,
+    ColorThemeSwitcher,
     RouterLinkActive,
-    RouterLink,
-    AsyncPipe
+    RouterLink
   ],
   templateUrl: './top-bar.html',
   styles: ``,
@@ -24,27 +24,28 @@ import {NewClickSource, routePathToSource} from "@common/models/new-click-source
 })
 export class TopBar implements OnInit, OnDestroy {
 
-  private readonly router = inject(Router);
-  private readonly newClick = inject(NewClick);
-  private readonly settings = inject(LocalStorage);
+  readonly #router = inject(Router);
+  readonly #converterDispatch = injectDispatch(converterEvents);
+  readonly #palettesDispatch = injectDispatch(palettesEvents);
+  readonly #store = inject(AppStateStore);
 
-  private subscription?: Subscription;
-  private newClickSource: NewClickSource = "convert";
+  #subscription?: Subscription;
+  #newClickSource: NewClickSource = "convert";
 
   protected readonly triggerNewCaption = signal("New random color");
-  protected readonly paletteId$ = this.settings.get$("currentPaletteId");
+  protected readonly currentPalette = this.#store.currentPalette;
 
 
   public ngOnInit() {
-    this.subscription = this.router.events
+    this.#subscription = this.#router.events
       .pipe(
         filter(event => event.type === EventType.NavigationEnd),
         map(event => event.urlAfterRedirects)
       )
       .subscribe(path => {
-        this.newClickSource = routePathToSource(path);
+        this.#newClickSource = routePathToSource(path);
 
-        if (this.newClickSource === "palettes") {
+        if (this.#newClickSource === "palettes") {
           this.triggerNewCaption.set("New palette");
           return;
         }
@@ -55,12 +56,20 @@ export class TopBar implements OnInit, OnDestroy {
 
 
   public ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.#subscription?.unsubscribe();
   }
 
 
   protected triggerNew() {
-    this.newClick.triggerNew(this.newClickSource);
+    switch (this.#newClickSource) {
+      case "palettes":
+        this.#palettesDispatch.newRandomPalette();
+        return;
+      case "convert":
+        this.#converterDispatch.newRandomColor();
+        return;
+    }
   }
+
 
 }

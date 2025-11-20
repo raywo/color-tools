@@ -15,7 +15,7 @@
       </a>
     </li>
 
-    @let paletteId = (paletteId$ | async) ?? "";
+    @let paletteId = currentPalette().id;
 
     <li class="nav-item">
       <a class="nav-link"

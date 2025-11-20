@@ -1,6 +1,6 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {ColorPaletteService} from "@palettes/services/color-palette-service";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {injectDispatch} from "@ngrx/signals/events";
+import {palettesEvents} from "@core/palettes/palettes.events";
 
 
 @Component({
@@ -9,16 +9,13 @@ import {Router} from "@angular/router";
   template: ``,
   styles: ``,
 })
-export class EmptyPalette implements OnInit{
+export class EmptyPalette implements OnInit {
 
-  private readonly paletteService = inject(ColorPaletteService);
-  private readonly router = inject(Router);
+  readonly #dispatch = injectDispatch(palettesEvents);
+
 
   public ngOnInit(): void {
-    this.paletteService.newRandomPalette();
-    const id = this.paletteService.palette.id;
-
-    void this.router.navigate(["/palettes", id]);
+    this.#dispatch.newRandomPalette();
   }
 
 }

@@ -2,11 +2,14 @@ import {ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalEr
 import {provideRouter, withComponentInputBinding} from '@angular/router';
 
 import {routes} from './app.routes';
-import {ColorThemeService} from '@common/services/color-theme.service';
+import {injectDispatch} from "@ngrx/signals/events";
+import {persistenceEvents} from "./core/common/persistence.events";
+import {AppStateStore} from "./core/app-state.store";
 
 
 function initializeApp(this: void): void {
-  inject(ColorThemeService);
+  inject(AppStateStore);
+  injectDispatch(persistenceEvents).loadAppState();
 }
 
 export const appConfig: ApplicationConfig = {

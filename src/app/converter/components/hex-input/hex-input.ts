@@ -1,9 +1,10 @@
-import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, linkedSignal, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ColorService} from '@converter/services/color-service';
 import chroma, {Color} from 'chroma-js';
-import {Subscription} from 'rxjs';
 import {CopyCss} from '@converter/components/copy-css/copy-css';
+import {AppStateStore} from "@core/app-state.store";
+import {injectDispatch} from "@ngrx/signals/events";
+import {converterEvents} from "@core/converter/converter.events";
 
 
 @Component({
@@ -15,15 +16,18 @@ import {CopyCss} from '@converter/components/copy-css/copy-css';
   templateUrl: './hex-input.html',
   styles: ``
 })
-export class HexInput implements OnInit, OnDestroy {
+export class HexInput {
 
-  private readonly colorService = inject(ColorService);
+  readonly #stateStore = inject(AppStateStore);
+  readonly #dispatch = injectDispatch(converterEvents);
 
-  private subscription?: Subscription;
-  private readonly changing = signal<boolean>(false);
+  readonly #changing = signal<boolean>(false);
 
-  protected readonly currentColor$ = this.colorService.currentColor$;
-  protected readonly hexColor = signal<string>("");
+  protected readonly hexColor = linkedSignal(() => {
+    const currentColor = this.#stateStore.currentColor();
+
+    return currentColor?.hex().replace("#", "") ?? "";
+  });
 
   protected readonly color = computed<Color | null>(() => {
     const hexColor = this.hexColor();
@@ -34,31 +38,12 @@ export class HexInput implements OnInit, OnDestroy {
   });
 
 
-  public ngOnInit() {
-    this.subscription = this.colorService.currentColor$
-      .subscribe(color => {
-        if (this.changing()) {
-          this.changing.set(false);
-          return;
-        }
-
-        this.changing.set(false);
-        this.hexColor.set(color.hex().replace("#", ""));
-      });
-  }
-
-
-  public ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
-
-
   protected colorChanged() {
     const color = this.color();
 
     if (color) {
-      this.changing.set(true);
-      this.colorService.currentColor = color;
+      this.#changing.set(true);
+      this.#dispatch.colorChanged(color);
     }
   }
 

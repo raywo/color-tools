@@ -1,18 +1,15 @@
 import {Component, inject} from '@angular/core';
-import {ColorService} from '@converter/services/color-service';
-import {AsyncPipe} from '@angular/common';
+import {AppStateStore} from "@core/app-state.store";
 
 
 @Component({
   selector: 'app-color-preview',
-  imports: [
-    AsyncPipe
-  ],
+  imports: [],
   templateUrl: './color-preview.html',
   styles: ``
 })
 export class ColorPreview {
 
-  protected readonly currentColor$ = inject(ColorService).currentColor$;
+  protected readonly currentColor = inject(AppStateStore).currentColor;
 
 }

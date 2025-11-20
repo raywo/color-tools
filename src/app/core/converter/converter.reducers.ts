@@ -1,0 +1,93 @@
+import {EventInstance} from "@ngrx/signals/events";
+import chroma, {Color} from "chroma-js";
+import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
+import {ColorSpace} from "@common/models/color-space.model";
+import {AppState} from "@core/models/app-state.model";
+
+
+export function newRandomColorReducer(
+  this: void,
+  event: EventInstance<"[Converter] newRandomColor", void>,
+  state: AppState
+) {
+  const currentColor = chroma.random();
+  const tintColors = createTints(currentColor, state.useBezier, state.correctLightness);
+  const shadeColors = createShades(currentColor, state.useBezier, state.correctLightness);
+
+  return {
+    currentColor,
+    tintColors,
+    shadeColors
+  };
+}
+
+
+export function colorChangedReducer(
+  this: void,
+  event: EventInstance<"[Converter] colorChanged", Color>,
+  state: AppState
+) {
+  const currentColor = event.payload;
+  const tintColors = createTints(currentColor, state.useBezier, state.correctLightness);
+  const shadeColors = createShades(currentColor, state.useBezier, state.correctLightness);
+
+  return {
+    currentColor,
+    tintColors,
+    shadeColors
+  };
+}
+
+
+export function correctLightnessReducer(
+  this: void,
+  event: EventInstance<"[Converter] correctLightnessChanged", boolean>,
+  state: AppState
+) {
+  const correctLightness = event.payload;
+  const color = state.currentColor;
+  const tintColors = createTints(color, state.useBezier, correctLightness);
+  const shadeColors = createShades(color, state.useBezier, correctLightness);
+
+  return {
+    correctLightness,
+    tintColors,
+    shadeColors
+  };
+}
+
+
+export function useBezierReducer(
+  this: void,
+  event: EventInstance<"[Converter] useBezierChanged", boolean>,
+  state: AppState
+) {
+  const useBezier = event.payload;
+  const color = state.currentColor;
+  const tintColors = createTints(color, useBezier, state.correctLightness);
+  const shadeColors = createShades(color, useBezier, state.correctLightness);
+
+  return {
+    useBezier,
+    tintColors,
+    shadeColors
+  };
+}
+
+
+export function displayColorSpaceReducer(
+  this: void,
+  event: EventInstance<"[Converter] displayColorSpaceChanged", ColorSpace>,
+  state: AppState
+) {
+  return {displayColorSpace: event.payload};
+}
+
+
+export function useAsBackgroundReducer(
+  this: void,
+  event: EventInstance<"[Converter] useAsBackgroundChanged", boolean>,
+  state: AppState
+) {
+  return {useAsBackground: event.payload};
+}

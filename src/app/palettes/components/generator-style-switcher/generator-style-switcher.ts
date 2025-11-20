@@ -1,8 +1,9 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ColorPaletteService} from '@palettes/services/color-palette-service';
+import {Component, inject} from '@angular/core';
 import {PaletteStyle} from '@palettes/models/palette-style.model';
-import {Subscription} from 'rxjs';
 import {FormsModule} from '@angular/forms';
+import {AppStateStore} from "@core/app-state.store";
+import {injectDispatch} from "@ngrx/signals/events";
+import {palettesEvents} from "@core/palettes/palettes.events";
 
 
 @Component({
@@ -13,34 +14,22 @@ import {FormsModule} from '@angular/forms';
   templateUrl: './generator-style-switcher.html',
   styles: ``,
 })
-export class GeneratorStyleSwitcher implements OnInit, OnDestroy {
+export class GeneratorStyleSwitcher {
 
-  private readonly paletteService = inject(ColorPaletteService);
-  private subscription?: Subscription;
+  readonly #stateStore = inject(AppStateStore);
+  readonly #dispatch = injectDispatch(palettesEvents);
 
-  protected readonly style = signal<PaletteStyle>("vibrant-balanced");
-  protected readonly useRandom = signal(false);
-
-
-  public ngOnInit() {
-    this.subscription = this.paletteService.style$
-      .subscribe(style => this.style.set(style));
-  }
-
-
-  public ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
+  protected readonly style = this.#stateStore.paletteStyle;
+  protected readonly useRandom = this.#stateStore.useRandomStyle;
 
 
   protected useRandomChanged(value: boolean) {
-    this.useRandom.set(value);
-    this.paletteService.useRandom = value;
+    this.#dispatch.useRandomChanged(value);
   }
 
 
   protected setStyle(style: PaletteStyle) {
-    this.paletteService.style = style;
+    this.#dispatch.styleChanged(style);
   }
 
 }

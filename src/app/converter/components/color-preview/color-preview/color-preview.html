@@ -1,5 +1,4 @@
-@let color = (currentColor$ | async)!;
-@let hexColor = color.hex();
+@let hexColor = currentColor().hex();
 
 <div class="color-preview"
      [style.background-color]="hexColor">

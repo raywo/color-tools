@@ -1,11 +1,12 @@
-import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, linkedSignal} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ColorService} from '@converter/services/color-service';
-import {Subscription} from 'rxjs';
 import chroma from 'chroma-js';
 import {inRgbRange} from '@common/helpers/rgb.helper';
 import {CopyCss} from '@converter/components/copy-css/copy-css';
 import {RangedInput} from '@converter/components/ranged-input/ranged-input';
+import {injectDispatch} from "@ngrx/signals/events";
+import {converterEvents} from "@core/converter/converter.events";
+import {AppStateStore} from "@core/app-state.store";
 
 
 @Component({
@@ -19,15 +20,22 @@ import {RangedInput} from '@converter/components/ranged-input/ranged-input';
   templateUrl: './rgb-input.html',
   styles: ``
 })
-export class RgbInput implements OnInit, OnDestroy {
+export class RgbInput {
 
-  private readonly colorService = inject(ColorService);
+  readonly #stateStore = inject(AppStateStore);
+  readonly #dispatch = injectDispatch(converterEvents);
 
-  private subscription?: Subscription;
+  protected readonly red = linkedSignal(() => {
+    return this.#stateStore.currentColor().rgb()[0];
+  });
 
-  protected readonly red = signal<number | null>(0);
-  protected readonly green = signal<number | null>(0);
-  protected readonly blue = signal<number | null>(0);
+  protected readonly green = linkedSignal(() => {
+    return this.#stateStore.currentColor().rgb()[1];
+  });
+
+  protected readonly blue = linkedSignal(() => {
+    return this.#stateStore.currentColor().rgb()[2];
+  });
 
   private readonly color = computed(() => {
     const red = this.red();
@@ -40,22 +48,6 @@ export class RgbInput implements OnInit, OnDestroy {
 
     return chroma([red, green, blue]);
   });
-
-
-  public ngOnInit() {
-    this.subscription = this.colorService.currentColor$
-      .subscribe(color => {
-        const rgb = color.rgb();
-        this.red.set(rgb[0]);
-        this.green.set(rgb[1]);
-        this.blue.set(rgb[2]);
-      });
-  }
-
-
-  public ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
 
 
   protected redChanged(value: number | null) {
@@ -80,7 +72,7 @@ export class RgbInput implements OnInit, OnDestroy {
     const color = this.color();
 
     if (color) {
-      this.colorService.currentColor = color;
+      this.#dispatch.colorChanged(color);
     }
   }
 
