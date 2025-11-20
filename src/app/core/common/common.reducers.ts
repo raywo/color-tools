@@ -1,6 +1,6 @@
 import {EventInstance} from "@ngrx/signals/events";
-import {AppState} from "../app-state.store";
 import {ColorTheme} from "@common/models/color-theme.model";
+import {AppState} from "@core/models/app-state.model";
 
 
 export function colorThemeChangedReducer(

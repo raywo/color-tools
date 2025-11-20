@@ -1,11 +1,11 @@
 import {EventInstance} from "@ngrx/signals/events";
-import {AppState} from "../app-state.store";
 import {inject} from "@angular/core";
 import {LocalStorage} from "@common/services/local-storage.service";
 import {generatePalette} from "@palettes/helper/palette.helper";
 import {isRestorable, paletteFromId} from "@palettes/helper/palette-id.helper";
 import chroma from "chroma-js";
 import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
+import {AppState} from "@core/models/app-state.model";
 
 
 export function loadAppStateReducer(
