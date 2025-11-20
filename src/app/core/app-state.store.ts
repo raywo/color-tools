@@ -21,6 +21,9 @@ import {colorThemeChangeEffect} from "./common/common.effects";
 import {saveStateEffect} from "./common/persistence.effects";
 import {colorChangedEffect, useAsBackgroundChangedEffect} from "./converter/converter.effects";
 import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
+import {newRandomPaletteReducer, paletteChangedReducer, restorePaletteReducer, styleChangedReducer, updatePaletteColorReducer, useRandomChangedReducer} from "@core/palettes/palettes.reducers";
+import {Router} from "@angular/router";
+import {navigateToPaletteIdEffect} from "@core/palettes/palettes.effects";
 
 
 export type AppState = {
@@ -59,8 +62,6 @@ const initialState: AppState = {
   colorTheme: "system"
 };
 
-console.log("initial state: ", initialState, "\ninitial color: ", initialColor, initialColor.hex())
-
 export const AppStateStore = signalStore(
   {providedIn: "root"},
   withState(initialState),
@@ -72,20 +73,33 @@ export const AppStateStore = signalStore(
     on(converterEvents.useAsBackgroundChanged, useAsBackgroundReducer),
     on(converterEvents.correctLightnessChanged, correctLightnessReducer),
     on(converterEvents.useBezierChanged, useBezierReducer),
-    on(converterEvents.displayColorSpaceChanged, displayColorSpaceReducer)
+    on(converterEvents.displayColorSpaceChanged, displayColorSpaceReducer),
+    on(palettesEvents.newRandomPalette, newRandomPaletteReducer),
+    on(palettesEvents.restorePalette, restorePaletteReducer),
+    on(palettesEvents.updatePaletteColor, updatePaletteColorReducer),
+    on(palettesEvents.paletteChanged, paletteChangedReducer),
+    on(palettesEvents.useRandomChanged, useRandomChangedReducer),
+    on(palettesEvents.styleChanged, styleChangedReducer)
   ),
   withEffects(
     (
       store,
       events = inject(Events),
       localStorageService = inject(LocalStorage),
-      themeService = inject(ColorThemeService)
+      themeService = inject(ColorThemeService),
+      router = inject(Router)
     ) => ({
       setColorTheme$: colorThemeChangeEffect(events, themeService),
 
       setBackgroundColor$: useAsBackgroundChangedEffect(
         events,
         themeService,
+        store
+      ),
+
+      navigateToPalette$: navigateToPaletteIdEffect(
+        events,
+        router,
         store
       ),
 

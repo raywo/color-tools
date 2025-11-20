@@ -6,6 +6,7 @@ import {NewClickSource, routePathToSource} from "@common/models/new-click-source
 import {injectDispatch} from "@ngrx/signals/events";
 import {converterEvents} from "@core/converter/converter.events";
 import {AppStateStore} from "@core/app-state.store";
+import {palettesEvents} from "@core/palettes/palettes.events";
 
 
 @Component({
@@ -24,7 +25,8 @@ import {AppStateStore} from "@core/app-state.store";
 export class TopBar implements OnInit, OnDestroy {
 
   readonly #router = inject(Router);
-  readonly #dispatch = injectDispatch(converterEvents);
+  readonly #converterDispatch = injectDispatch(converterEvents);
+  readonly #palettesDispatch = injectDispatch(palettesEvents);
   readonly #store = inject(AppStateStore);
 
   #subscription?: Subscription;
@@ -59,7 +61,15 @@ export class TopBar implements OnInit, OnDestroy {
 
 
   protected triggerNew() {
-    this.#dispatch.newRandomColor();
+    switch (this.#newClickSource) {
+      case "palettes":
+        this.#palettesDispatch.newRandomPalette();
+        return;
+      case "convert":
+        this.#converterDispatch.newRandomColor();
+        return;
+    }
   }
+
 
 }
