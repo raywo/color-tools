@@ -1,10 +1,11 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {Color} from 'chroma-js';
 import {ColorSpace} from '@common/models/color-space.model';
 import {NgTemplateOutlet} from '@angular/common';
 import {KeyValueDisplay} from '@converter/components/key-value-display/key-value-display';
 import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
-import {ColorService} from '@converter/services/color-service';
+import {injectDispatch} from "@ngrx/signals/events";
+import {converterEvents} from "@core/converter/converter.events";
 
 
 @Component({
@@ -19,7 +20,7 @@ import {ColorService} from '@converter/services/color-service';
 })
 export class ColorSwatch {
 
-  private readonly colorService = inject(ColorService);
+  readonly #dispatch = injectDispatch(converterEvents);
 
   public readonly color = input.required<Color>();
   public readonly colorMode = input.required<ColorSpace>();
@@ -44,7 +45,7 @@ export class ColorSwatch {
 
 
   protected setAsCurrentColor() {
-    this.colorService.currentColor = this.color();
+    this.#dispatch.colorChanged(this.color());
   }
 
 }

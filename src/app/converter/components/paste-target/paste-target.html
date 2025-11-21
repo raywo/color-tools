@@ -7,5 +7,5 @@
        class="form-control"
        name="pastedColor"
        [(ngModel)]="pastedColor"
-       (blur)="colorChanged()"
-       #pasteField="ngModel">
+       (blur)="colorChanged(pasteField.value)"
+       #pasteField>
