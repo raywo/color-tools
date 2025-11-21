@@ -5,11 +5,13 @@ import {Palette} from "@palettes/models/palette.model";
 import {ColorTheme} from "@common/models/color-theme.model";
 import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
 import {generatePalette} from "@palettes/helper/palette.helper";
+import {contrastingColor} from "@common/helpers/contrasting-color.helper";
 
 
 export type AppState = {
   // Converter related
   currentColor: Color;
+  textColor: Color;
   useAsBackground: boolean;
   correctLightness: boolean;
   useBezier: boolean;
@@ -24,12 +26,14 @@ export type AppState = {
 
   // Common
   colorTheme: ColorTheme;
-}
+};
 
 const initialColor = chroma.random();
+const textColor = contrastingColor(initialColor);
 
 export const initialState: AppState = {
   currentColor: initialColor,
+  textColor,
   useAsBackground: false,
   correctLightness: true,
   useBezier: true,

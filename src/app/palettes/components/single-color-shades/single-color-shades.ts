@@ -38,7 +38,7 @@ export class SingleColorShades {
 
 
   protected textColor(color: Color): string {
-    return contrastingColor(color);
+    return contrastingColor(color).hex();
   }
 
 

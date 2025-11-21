@@ -17,10 +17,10 @@ const DARK_TEXT_COLOR = "#000";
  * @return {string} The contrasting text color, either a light or dark color,
  *                  selected to maintain sufficient contrast for readability.
  */
-export function contrastingColor(color: Color | string): string {
+export function contrastingColor(color: Color | string): Color {
   const contrast = chroma.contrast(color, LIGHT_TEXT_COLOR);
 
-  return (contrast > 4.5) ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR;
+  return (contrast > 4.5) ? chroma(LIGHT_TEXT_COLOR) : chroma(DARK_TEXT_COLOR);
 }
 
 
@@ -40,7 +40,7 @@ export function contrastingColor(color: Color | string): string {
  *                               compatible format.
  * @return {string} The hexadecimal representation of the muted contrasting color.
  */
-export function contrastingMutedColor(color: Color | string): string {
+export function contrastingMutedColor(color: Color | string): Color {
   const step = 0.1;
   const maxIterations = 250;
 
@@ -57,7 +57,7 @@ export function contrastingMutedColor(color: Color | string): string {
       : result.darken(step);
   }
 
-  return result.hex();
+  return result;
 }
 
 

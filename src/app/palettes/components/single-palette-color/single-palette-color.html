@@ -2,9 +2,9 @@
 
 <div class="single-palette-color"
      [class.showing-shades]="showShades()"
-     [style]="{'--ct-color-bg-color': hex,
-               '--ct-color-text-color': textColor(),
-               '--ct-color-muted-text-color': mutedTextColor()}">
+     [style.--ct-color-bg-color]="hex"
+     [style.--ct-color-text-color]="textColor().hex()"
+     [style.--ct-color-muted-text-color]="mutedTextColor().hex()">
   @if (showShades()) {
     <div app-single-color-shades [color]="color()"
          (colorSelected)="updateColor($event)">

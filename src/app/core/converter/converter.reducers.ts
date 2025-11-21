@@ -3,6 +3,7 @@ import chroma, {Color} from "chroma-js";
 import {createShades, createTints} from "@common/helpers/tints-and-shades.helper";
 import {ColorSpace} from "@common/models/color-space.model";
 import {AppState} from "@core/models/app-state.model";
+import {contrastingColor} from "@common/helpers/contrasting-color.helper";
 
 
 export function newRandomColorReducer(
@@ -11,11 +12,13 @@ export function newRandomColorReducer(
   state: AppState
 ) {
   const currentColor = chroma.random();
+  const textColor = contrastingColor(currentColor);
   const tintColors = createTints(currentColor, state.useBezier, state.correctLightness);
   const shadeColors = createShades(currentColor, state.useBezier, state.correctLightness);
 
   return {
     currentColor,
+    textColor,
     tintColors,
     shadeColors
   };
@@ -28,11 +31,13 @@ export function colorChangedReducer(
   state: AppState
 ) {
   const currentColor = event.payload;
+  const textColor = contrastingColor(currentColor);
   const tintColors = createTints(currentColor, state.useBezier, state.correctLightness);
   const shadeColors = createShades(currentColor, state.useBezier, state.correctLightness);
 
   return {
     currentColor,
+    textColor,
     tintColors,
     shadeColors
   };
