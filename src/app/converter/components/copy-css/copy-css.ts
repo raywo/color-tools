@@ -1,15 +1,11 @@
-import {Component, inject, input} from '@angular/core';
-import {AsyncPipe} from '@angular/common';
-import {ColorService} from '@converter/services/color-service';
+import {Component, computed, inject, input} from '@angular/core';
 import {ColorSpace} from '@common/models/color-space.model';
-import {map} from 'rxjs';
+import {AppStateStore} from "@core/app-state.store";
 
 
 @Component({
   selector: 'div[app-copy-css]',
-  imports: [
-    AsyncPipe
-  ],
+  imports: [],
   templateUrl: './copy-css.html',
   styles: ``,
   host: {
@@ -18,22 +14,22 @@ import {map} from 'rxjs';
 })
 export class CopyCss {
 
-  protected readonly cssToDisplay$ = inject(ColorService)
-    .currentColor$
-    .pipe(
-      map(color => {
-        switch (this.colorMode()) {
-          case "hex":
-            return color.hex();
-          case "rgb":
-            return color.css("rgb");
-          case "hsl":
-            return color.css("hsl");
-          default:
-            return color.hex();
-        }
-      })
-    );
+  readonly #stateStore = inject(AppStateStore);
+
+  protected readonly cssToDisplay = computed(() => {
+    const color = this.#stateStore.currentColor();
+
+    switch (this.colorMode()) {
+      case "hex":
+        return color.hex();
+      case "rgb":
+        return color.css("rgb");
+      case "hsl":
+        return color.css("hsl");
+      default:
+        return color.hex();
+    }
+  });
 
 
   public readonly colorMode = input.required<ColorSpace>();

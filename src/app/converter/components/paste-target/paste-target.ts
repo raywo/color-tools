@@ -1,8 +1,9 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ColorService} from '@converter/services/color-service';
 import {colorFrom} from '@common/helpers/color-format-parser.helper';
 import {Subscription} from 'rxjs';
+import {Events, injectDispatch} from "@ngrx/signals/events";
+import {converterEvents} from "@core/converter/converter.events";
 
 
 @Component({
@@ -15,30 +16,31 @@ import {Subscription} from 'rxjs';
 })
 export class PasteTarget implements OnInit, OnDestroy {
 
-  private readonly colorService = inject(ColorService);
-  private subscription?: Subscription;
+  readonly #dispatch = injectDispatch(converterEvents);
+  readonly #events = inject(Events);
+
+  #subscription?: Subscription;
 
   protected readonly pastedColor = signal<string | null>(null);
 
 
   public ngOnInit(): void {
-    this.subscription = this.colorService.currentColor$
-      .subscribe(() => this.pastedColor.set(null));
+    this.#subscription = this.#events
+      .on(converterEvents.colorChanged)
+      .subscribe(() => this.pastedColor.set(null))
   }
 
 
   public ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.#subscription?.unsubscribe();
   }
 
 
-  protected colorChanged() {
-    const pastedColor = this.pastedColor();
-    const color = colorFrom(pastedColor);
+  protected colorChanged(value: string) {
+    const color = colorFrom(value);
 
     if (color) {
-      this.colorService.currentColor = color;
-      this.pastedColor.set("");
+      this.#dispatch.colorChanged(color);
     }
   }
 }
